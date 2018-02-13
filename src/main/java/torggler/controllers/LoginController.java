@@ -140,6 +140,30 @@ public void initialize(URL location, ResourceBundle resources) {
             List<TabUsers> userFxList = userDao.query(preparedQuery);
             userFxList.forEach(u -> {
                 UserFx userFx = new UserFx ();
+
+
+                userFx.setLogin (u.getLogin ());
+                System.out.println("Login : " + us.log_in);
+
+                userFx.setId (u.getId_user ());
+                us.id = u.getId_user ();
+                System.out.println("ID: "+ us.id);
+
+                userFx.setName(u.getName());
+                us.name = u.getName();
+                System.out.println("Name: " + us.name);
+
+                userFx.setSurname(u.getSurname());
+                us.surname = u.getSurname();
+                System.out.println("Surname: " + us.surname);
+
+                userFx.setPassword(u.getPassword());
+                us.password = u.getPassword();
+                System.out.println("Password:" + us.password);
+
+                userFx.setDepartment (u.getDepartment ());
+                us.department_lg = u.getDepartment ();
+                System.out.println("Dział: " + us.department_lg);
                 System.out.println("Login : " + us.log_in);
                 userFx.setId (u.getId_user ());
                 us.id = u.getId_user ();
@@ -148,10 +172,12 @@ public void initialize(URL location, ResourceBundle resources) {
                 userFx.setDepartment (u.getDepartment ());
                 us.department_lg = u.getDepartment ();
                 System.out.println("Dział: " + us.department_lg);
+
                 this.userFxObservableList.add (userFx); //nie używam ale zostawiam
             });
 
         }
+
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;

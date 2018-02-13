@@ -3,6 +3,8 @@ package torggler.controllers;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.beans.property.*;
@@ -36,6 +38,7 @@ import torggler.modelFx.*;
 import torggler.BaseModel;
 import torggler.dao.BaseDao;
 import torggler.tables.Status;
+import torggler.tables.TabUsers;
 import torggler.tables.TabWetBase;
 import torggler.tables.TabWetReport;
 import torggler.utils.converters.ConverterBase;
@@ -121,6 +124,8 @@ public class WetReportController implements BaseModel {
 
     private ObservableList<BaseFx> baseList = FXCollections.observableArrayList ( );
     private ObservableList<OrderFx> orderFxObservableList = FXCollections.observableArrayList ( );
+    private ObservableList<UserFx> userFxObservableList = FXCollections.observableArrayList (); //lista przechowuje
+    // Usera ktory jest zalogowany. Jest to druga metoda. Teraz wygwiazdkowana
 
 
     //---------------------------------------Table------------------------------------------
@@ -227,6 +232,13 @@ public class WetReportController implements BaseModel {
 
     public void initialize() {
 
+        /* druga metoda uzupełnia UserFx, do pobrania id
+        try {
+            setLoginUser();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        */
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String text = date.format(formatter);
@@ -275,24 +287,30 @@ public class WetReportController implements BaseModel {
         } catch (ApplicationException e) {
             e.printStackTrace ( );
         }
+
+        //userid---------------------
+
         this.lblUser.setText (UserSingleton.getInstance ().log_in);
         this.lblUserID.setText (UserSingleton.getInstance ().id.toString ());
 
         UserSingleton us = UserSingleton.getInstance();
         IntegerProperty intProperty = new SimpleIntegerProperty(us.id);
 
-        /*
+
         UserFx userFx = new UserFx ();
         userFx.setId (us.id);
-*/
+        userFx.setLogin(us.log_in);
+        userFx.setName(us.name);
+        userFx.setSurname(us.surname);
+        userFx.setPassword(us.password);
+        userFx.setDepartment(us.department_lg);
 
         this.orderModel.getOrderFxObjectProperty ().getUserFxCreate ().idProperty ().bind (intProperty);
-
-        // this.orderModel.getOrderFxObjectProperty ().userFxCreateProperty ().set (lblUserID.textProperty (), new
-           //     NumberStringConverter ());
-       //  this.orderModel.getOrderFxObjectProperty ().userFxCreateProperty ().set (UserSingleton.getInstance ().id);
-
-
+/*
+        this.orderModel.getOrderFxObjectProperty ().getUserFxCreate ().idProperty ().bind (userFxObservableList.get
+              (0).idProperty());
+*/
+        //end userid-----------------
 
         this.wetOrderedQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
                 .order_quantityProperty ( ), new NumberStringConverter ( ));
@@ -672,6 +690,48 @@ public class WetReportController implements BaseModel {
 
         LabBorderPane.setCenter (borderPane);
     }
+    public void setLoginUser() throws SQLException {
+
+        UserSingleton us = UserSingleton.getInstance();
+        ConnectionSource connectionSource = new JdbcConnectionSource(URL, USER, PASSWORD);
+        Dao<TabUsers, Integer> userDao = DaoManager.createDao(connectionSource, TabUsers.class);
+
+        QueryBuilder<TabUsers, Integer> queryBuilder = userDao.queryBuilder();
+        queryBuilder.where().eq("login", us.log_in);
+        PreparedQuery<TabUsers> preparedQuery = queryBuilder.prepare(); // możliwość zapisanie w krótszej formie
+        // 3.1 QueryBuilerBasic
+
+        List<TabUsers> userFxList = userDao.query(preparedQuery);
+        userFxList.forEach(u -> {
+            UserFx userFx = new UserFx ();
+
+            userFx.setLogin (u.getLogin ());
+            System.out.println("Login : " + us.log_in);
+
+            userFx.setId (u.getId_user ());
+            us.id = u.getId_user ();
+            System.out.println("ID: "+ us.id);
+
+            userFx.setName(u.getName());
+            us.name = u.getName();
+            System.out.println("Name: " + us.name);
+
+            userFx.setSurname(u.getSurname());
+            us.surname = u.getSurname();
+            System.out.println("Surname: " + us.surname);
+
+            userFx.setPassword(u.getPassword());
+            us.password = u.getPassword();
+            System.out.println("Password:" + us.password);
+
+            userFx.setDepartment (u.getDepartment ());
+            us.department_lg = u.getDepartment ();
+            System.out.println("Dział: " + us.department_lg);
+
+            this.userFxObservableList.add (userFx);
+        });
+    }
+
 
     //wczytywanie lab.fxml
     public void OnSelectionChangedTab3(Event event) {
@@ -721,6 +781,16 @@ public class WetReportController implements BaseModel {
     }
 
 
+    //SET & GET WHO IS LOG IN ---------------------------------------------------------
+
+
+    public ObservableList<UserFx> getUserFxObservableList() {
+        return userFxObservableList;
+    }
+
+    public void setUserFxObservableList(ObservableList<UserFx> userFxObservableList) {
+        this.userFxObservableList = userFxObservableList;
+    }
 
 }
 

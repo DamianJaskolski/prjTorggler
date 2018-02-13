@@ -183,9 +183,12 @@ public void initTable() throws ApplicationException {
                     .getGoodsProperty().getIdWetGoodsProperty());
             tabWetReport.setTabWetGoodsForegin(tabWetGoods);
 
+            UserDao userDao = new UserDao();
+            TabUsers tabUsers = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFxCreate()
+                    .getId());
+            tabWetReport.setTabUsersForegin(tabUsers);
 
-          //tabWetReport.setTabUsersForegin (UserSingleton.getInstance ().id);
-          //tabWetReport.setCreateDateReport(this.orderFxObjectProperty.get().getCreate_date());
+
             tabWetReport.setCompInfo (this.orderFxObjectProperty.get ().getCompInfo ());
             tabWetReport.setPack (this.orderFxObjectProperty.get ( ).getPack ( ));
             tabWetReport.setOrder_quantity (this.orderFxObjectProperty.get ( ).getOrder_quantity ( ));

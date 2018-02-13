@@ -25,6 +25,9 @@ public class UserSingleton {
     public Integer id;
     public String log_in;
     public String department_lg;
+    public String name;
+    public String surname;
+    public String password;
 
 
 
