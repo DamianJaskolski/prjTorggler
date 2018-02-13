@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane fx:id="laboratoryBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="torggler.controllers.LabController">
+   <bottom>
+      <ToggleButton fx:id="btnSave" mnemonicParsing="false" onAction="#saveOnAction" text="Zapisz do tabeli" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </BorderPane.margin>
+      </ToggleButton>
+   </bottom>
+   <top>
+      <GridPane alignment="TOP_CENTER" focusTraversable="true" prefHeight="300.0" prefWidth="497.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="346.0" minWidth="135.0" prefWidth="138.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="515.0" minWidth="10.0" prefWidth="512.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="90.0" minHeight="7.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="176.0" minHeight="10.0" prefHeight="169.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Nazwa użytkownika:" textAlignment="RIGHT" GridPane.halignment="RIGHT">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+            </Label>
+            <Label text="Status:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+            </Label>
+            <Label text="Komentarz:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </Label>
+            <TextArea fx:id="labComment" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="20.0" right="20.0" top="20.0" />
+               </GridPane.margin>
+            </TextArea>
+            <ComboBox fx:id="labBaseCB" disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="labStatusCB" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Gal Anonim" GridPane.columnIndex="1" />
+            <Label contentDisplay="RIGHT" text="Produkt:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <opaqueInsets>
+                  <Insets right="20.0" />
+               </opaqueInsets>
+               <padding>
+                  <Insets right="20.0" />
+               </padding></Label>
+            <Label text="Baza:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+            </Label>
+            <ComboBox fx:id="cmboBoxProdukt" disable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         </children>
+         <opaqueInsets>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </opaqueInsets>
+      </GridPane>
+   </top>
+</BorderPane>
