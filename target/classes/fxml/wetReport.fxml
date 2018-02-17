@@ -184,7 +184,8 @@
                                           <TableColumn fx:id="colPACK" onEditCommit="#onEditC2" prefWidth="91.0" text="Opakowanie" />
                                           <TableColumn fx:id="colORDER_QUANITY" onEditCommit="#onEditC2" prefWidth="101.5999755859375" text="Ilość zamówiona" />
                                           <TableColumn fx:id="colORDER_REALIZE" minWidth="0.0" onEditCommit="#onEditC2" prefWidth="113.5999755859375" text="Ilość wykonana" />
-                                          <TableColumn fx:id="colCOMMENT" onEditCommit="#onEditC2" prefWidth="156.79998779296875" text="Komentarz" />
+                                          <TableColumn fx:id="colWETPRODUCTLABEDIT2" onEditCommit="#onEditC2" prefWidth="77.0" text="Lab.Edytuj2" />
+                                          <TableColumn fx:id="colCOMMENT" onEditCommit="#onEditC2" prefWidth="130.0" text="Komentarz" />
                                           <TableColumn fx:id="colCREATE_DATE_REPORT" onEditCommit="#onEditC2" prefWidth="150.0" text="Data utworzenia zlecenia" />
                                           <TableColumn fx:id="colIDUSERFOREIGNCreate" onEditCommit="#onEditC2" prefWidth="200.0" text="Użytkownik zlecający" />
                                           <TableColumn fx:id="colEDITION_DATE_REPORT" onEditCommit="#onEditC2" prefWidth="150.0" text="Data ostatniej edycji " />

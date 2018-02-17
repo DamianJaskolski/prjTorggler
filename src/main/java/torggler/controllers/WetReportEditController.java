@@ -106,7 +106,7 @@ public class WetReportEditController {
 
         //Ilość wykonana
         this.textFieledEditcolOrderRealize.textProperty ().bindBidirectional (this.wetReportEditModel
-                .getEditOrderFxObjectProperty ().order_realizeProperty (), new NumberStringConverter ());
+               .getEditOrderFxObjectProperty ().order_realizeProperty (), new NumberStringConverter ());
 
         //Komentarz
         this.textAreaEditComment.textProperty ().bindBidirectional (this.wetReportEditModel

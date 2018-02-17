@@ -156,6 +156,9 @@ public class WetReportController implements BaseModel {
     private TableColumn<OrderFx, Double> colORDER_REALIZE;
 
     @FXML
+    private TableColumn<OrderFx, OrderFx> colWETPRODUCTLABEDIT2;
+
+    @FXML
     private TableColumn<OrderFx, String> colCOMMENT;
 
     @FXML
@@ -461,6 +464,57 @@ public class WetReportController implements BaseModel {
 
 // END EDIT------------------------------------------------------------------------------------------------------------
 
+        // EDIT REPORT2
+        // ----------------------------------------------------------------------------------------------------------------
+//#50
+        this.colWETPRODUCTLABEDIT2.setCellFactory (param -> new TableCell<OrderFx, OrderFx> ( ) {
+            Button button = createButton ("/img/edit_report_32.png");
+
+            @Override
+            protected void updateItem(OrderFx item, boolean empty) {
+                super.updateItem (item, empty);
+
+                // kasowanie grfiki jeśli komórka pusta #49 12:00
+                if (empty) {
+                    setGraphic (null);
+                    return;
+                }
+
+                //Gdy komórka ma wartości wstaw przycisk w przeciwynym razie nie dodawaj-------------------------------
+                if (!empty) {
+                    setGraphic (button);
+
+                    button.setOnAction (event -> {
+                        FXMLLoader loader = FxmlUtils.getLoader ("/fxml/wetReportEdit2.fxml");
+                        Scene scene = null;
+
+                        try {
+                            scene = new Scene (loader.load ());
+                        } catch (IOException e) {
+                            e.printStackTrace ( );
+                        }
+
+
+                        WetReportEdit2Controller reportEdit2Controller = loader.getController ();
+                        reportEdit2Controller.getWetReportEdit2Model ().setEdit2OrderFxObjectProperty (item);
+                        reportEdit2Controller.bindings(); //!!! drugie bindowanie z vartoscią = i
+
+                        Stage stage = new Stage ();
+                        stage.setScene (scene);
+                        stage.initModality (Modality.APPLICATION_MODAL);
+                        stage.showAndWait ();
+                        loadTable ();
+
+                    });
+                }
+                //End wstawianie przycisku w tabele -------------------------------------------------------------------
+
+
+            }
+        });
+
+// END EDIT------------------------------------------------------------------------------------------------------------
+
         // EDIT REPORT
         // ----------------------------------------------------------------------------------------------------------------
 //#50
@@ -512,6 +566,8 @@ public class WetReportController implements BaseModel {
 
 // END EDIT------------------------------------------------------------------------------------------------------------
 
+
+
     }
 
     private void loadTable(){
@@ -532,6 +588,7 @@ public class WetReportController implements BaseModel {
         this.colPACK.setCellValueFactory (cellData -> cellData.getValue ( ).packProperty ( ).asObject ( ));
         this.colORDER_QUANITY.setCellValueFactory (cellData -> cellData.getValue ( ).order_quantityProperty ( ).asObject ( ));
         this.colORDER_REALIZE.setCellValueFactory (cellData -> cellData.getValue ( ).order_realizeProperty ( ).asObject ( ));
+        this.colWETPRODUCTLABEDIT2.setCellValueFactory (cellData->new SimpleObjectProperty<> (cellData.getValue ()));
         this.colCOMMENT.setCellValueFactory (param -> param.getValue ( ).commentProperty ( ));
 
         this.colIDUSERFOREIGNCreate.setCellValueFactory (cellData ->cellData.getValue ().userFxCreateProperty ());

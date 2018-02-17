@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="torggler.controllers.WetReportEditController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="torggler.controllers.WetReportEdit2Controller">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -29,15 +29,14 @@
           <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="144.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="81.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="133.0" minHeight="10.0" prefHeight="125.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Informacja uzupełniająca:" GridPane.rowIndex="5" />
             <Label text="Użyta baza:" GridPane.rowIndex="6" />
             <Label text="Opakowanie:" GridPane.rowIndex="7" />
-            <Label text="Ilość zamówiona:" GridPane.rowIndex="8" />
-            <Label text="Ilość wykonana:" textFill="#8c8c8c" GridPane.rowIndex="3" />
+            <Label text="Ilość wykonana:" GridPane.rowIndex="8" />
             <Label text="Komentarz:" GridPane.rowIndex="9" />
             <TextArea fx:id="textAreaEditExtendedInfo" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
@@ -54,12 +53,7 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="textFieldEditOrderQantity" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
-               <GridPane.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="textFieledEditcolOrderRealize" disable="true" editable="false" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="textFieledEditcolOrderRealize" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
@@ -92,8 +86,14 @@
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <Separator prefHeight="0.0" prefWidth="466.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Separator prefWidth="200.0" GridPane.rowIndex="4" />
+            <Label text="Ilość zamówiona:" textFill="#8c8c8c" GridPane.rowIndex="3" />
+            <TextField fx:id="textFieldEditOrderQantity" disable="true" editable="false" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
       </GridPane>
    </center>

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
@@ -23,46 +24,47 @@
             <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="144.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="81.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="133.0" minHeight="10.0" prefHeight="125.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Informacja uzupełniająca:" GridPane.rowIndex="3" />
-            <Label text="Użyta baza:" GridPane.rowIndex="4" />
-            <Label text="Opakowanie:" GridPane.rowIndex="5" />
-            <Label text="Ilość zamówiona:" GridPane.rowIndex="6" />
-            <Label text="Ilość wykonana:" GridPane.rowIndex="7" />
-            <Label text="Komentarz:" GridPane.rowIndex="8" />
-            <TextArea fx:id="textAreaEditExtendedInfo" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Label text="Informacja uzupełniająca:" GridPane.rowIndex="5" />
+            <Label text="Użyta baza:" GridPane.rowIndex="6" />
+            <Label text="Opakowanie:" GridPane.rowIndex="7" />
+            <Label text="Ilość zamówiona:" GridPane.rowIndex="8" />
+            <Label text="Ilość wykonana:" textFill="#8c8c8c" GridPane.rowIndex="3" />
+            <Label text="Komentarz:" GridPane.rowIndex="9" />
+            <TextArea fx:id="textAreaEditExtendedInfo" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
             </TextArea>
-            <ComboBox fx:id="comboBoxEditBase" prefHeight="25.0" prefWidth="64.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <ComboBox fx:id="comboBoxEditBase" prefHeight="25.0" prefWidth="64.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
             </ComboBox>
-            <TextField fx:id="textFieldEditPack" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <TextField fx:id="textFieldEditPack" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="textFieldEditOrderQantity" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <TextField fx:id="textFieldEditOrderQantity" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="textFieledEditcolOrderRealize" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <TextField fx:id="textFieledEditcolOrderRealize" disable="true" editable="false" maxHeight="-Infinity" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextArea fx:id="textAreaEditComment" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <TextArea fx:id="textAreaEditComment" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
@@ -73,12 +75,7 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </GridPane.margin>
             </Label>
-            <Label text="np: 100 lub 100,25" GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets bottom="20.0" left="130.0" right="20.0" top="20.0" />
-               </GridPane.margin>
-            </Label>
-            <Label text="np: 100 lub 100,25" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <Label text="np: 100 lub 100,25" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets bottom="20.0" left="130.0" right="20.0" top="20.0" />
                </GridPane.margin>
@@ -95,6 +92,8 @@
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
+            <Separator prefHeight="0.0" prefWidth="466.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </center>
