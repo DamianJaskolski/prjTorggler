@@ -11,6 +11,7 @@ import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -98,7 +99,7 @@ public class WetReportController implements BaseModel {
     private TextArea wetOrderComment;
 
     @FXML
-    private TableView<OrderFx> tabViewWetReport;
+    public TableView<OrderFx> tabViewWetReport;
 
     @FXML
     private TableColumn<OrderFx, Integer> colPack;
@@ -110,10 +111,13 @@ public class WetReportController implements BaseModel {
     private MenuItem deleteMenuItem;
 
     @FXML
-    private DatePicker dataPicker_filter;
+    private DatePicker date1;
 
     @FXML
-    private CheckBox checkBox_today;
+    private DatePicker date2;
+
+    @FXML
+    public CheckBox checkBox_today;
 
 
     private ConnectionSource connectionSource;
@@ -230,7 +234,8 @@ public class WetReportController implements BaseModel {
     //Ta lista służy do przechowania pełnej listy bazy do przywrócenia po filtrowaniu
     //1. wypełniamy listę danymi -> w sekcji FILTER INTIALIZE "wypełnianie danymi"
     private List<GoodsProperty> goodsPropertyList = new ArrayList<> ();
-
+    //filtrowanie daty
+    FilteredList<OrderFx> filteredData = new FilteredList<>(orderFxObservableList, person -> true);
     //---------------------------------------END FILTER-------------------------------------
 
     public void initialize() {
@@ -242,6 +247,20 @@ public class WetReportController implements BaseModel {
             e.printStackTrace();
         }
         */
+
+        this.checkBox_today.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+
+                filteredData.setPredicate (person -> isDayToday(person));
+                this.tabViewWetReport.setItems (filteredData);
+
+            } else {
+                this.tabViewWetReport.setItems (orderFxObservableList);
+
+            }
+        });
+
+
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String text = date.format(formatter);
@@ -299,7 +318,6 @@ public class WetReportController implements BaseModel {
         UserSingleton us = UserSingleton.getInstance();
         IntegerProperty intProperty = new SimpleIntegerProperty(us.id);
 
-
         UserFx userFx = new UserFx ();
         userFx.setId (us.id);
         userFx.setLogin(us.log_in);
@@ -309,6 +327,8 @@ public class WetReportController implements BaseModel {
         userFx.setDepartment(us.department_lg);
 
         this.orderModel.getOrderFxObjectProperty ().getUserFxCreate ().idProperty ().bind (intProperty);
+        this.orderModel.getOrderFxObjectProperty ().getUserFxEdit ().idProperty ().bind(intProperty);
+
 /*
         this.orderModel.getOrderFxObjectProperty ().getUserFxCreate ().idProperty ().bind (userFxObservableList.get
               (0).idProperty());
@@ -352,8 +372,11 @@ public class WetReportController implements BaseModel {
                 NumberStringConverter ( ));
         this.wetOrderedQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
                 .order_quantityProperty ( ), new NumberStringConverter ( ));
-        this.wedMadeQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
-                .order_realizeProperty ( ), new NumberStringConverter ( ));
+
+        // Podczas składania zamówienia nie wiadomo ile będzie zrealizowane
+        // this.wedMadeQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
+        //      .order_realizeProperty ( ), new NumberStringConverter ( ));
+
         this.orderModel.getOrderFxObjectProperty ( ).commentProperty ( ).bind (this.wetOrderComment.textProperty ( ));
         this.orderModel.getOrderFxObjectProperty ( ).compInfoProperty ( ).bind (this.wetOrderedCompInfo.textProperty ( ));
         //this.orderModel.getOrderFxObjectProperty().statusFxProperty().bind()(this.tfDefaultValueLab.textProperty());
@@ -468,7 +491,7 @@ public class WetReportController implements BaseModel {
         // ----------------------------------------------------------------------------------------------------------------
 //#50
         this.colWETPRODUCTLABEDIT2.setCellFactory (param -> new TableCell<OrderFx, OrderFx> ( ) {
-            Button button = createButton ("/img/edit_report_32.png");
+            Button button = createButton ("/img/edit_report._32G.png");
 
             @Override
             protected void updateItem(OrderFx item, boolean empty) {
@@ -519,7 +542,7 @@ public class WetReportController implements BaseModel {
         // ----------------------------------------------------------------------------------------------------------------
 //#50
         this.colWET_PRODUCT_EDIT.setCellFactory (param -> new TableCell<OrderFx, OrderFx> ( ) {
-            Button button = createButton ("/img/edit_report_32.png");
+            Button button = createButton ("/img/edit_report_32B.png");
 
             @Override
             protected void updateItem(OrderFx item, boolean empty) {
@@ -569,8 +592,21 @@ public class WetReportController implements BaseModel {
 
 
     }
+/*
+    private boolean dateBetween(Person person) {
+        LocalDate date1 = this.date1.getValue();
+        LocalDate date2 = this.date2.getValue();
+        boolean isAfter = person.getBirthday().toLocalDate().isAfter(date1) || person.getBirthday().toLocalDate().isEqual(date1);
+        boolean isBefore = person.getBirthday().toLocalDate().isBefore(date2)|| person.getBirthday().toLocalDate().isEqual(date2);
+        return isAfter && isBefore;
+    }
+  */
 
-    private void loadTable(){
+    private boolean isDayToday(OrderFx person) {
+        return person.getCreate_date ().toLocalDate().isEqual(LocalDate.now());
+    }
+
+    public void loadTable(){
         this.reportModel = new ReportModel ( );
         try {
             this.reportModel.initnew ( );
@@ -579,6 +615,7 @@ public class WetReportController implements BaseModel {
         }
 
         //uzp. v2 bindowanie
+
 
         this.tableViewWetReport.setItems (this.reportModel.getOrderFxObservableList ( ));
         this.ColIDORDER.setCellValueFactory (cellData -> cellData.getValue ( ).idProperty ( ).asObject ( ));
@@ -590,9 +627,8 @@ public class WetReportController implements BaseModel {
         this.colORDER_REALIZE.setCellValueFactory (cellData -> cellData.getValue ( ).order_realizeProperty ( ).asObject ( ));
         this.colWETPRODUCTLABEDIT2.setCellValueFactory (cellData->new SimpleObjectProperty<> (cellData.getValue ()));
         this.colCOMMENT.setCellValueFactory (param -> param.getValue ( ).commentProperty ( ));
-
         this.colIDUSERFOREIGNCreate.setCellValueFactory (cellData ->cellData.getValue ().userFxCreateProperty ());
-
+        this.colIDUSERFOREIGNEdit.setCellValueFactory (cellData->cellData.getValue ().userFxEditProperty ());
         this.colCREATE_DATE_REPORT.setCellValueFactory (cellData -> cellData.getValue ( ).create_dateProperty ( ));
         this.colEDITION_DATE_REPORT.setCellValueFactory (cellData -> cellData.getValue ( ).edit_dateProperty ( ));
         this.colWETPRODUCTLABCOMMENT.setCellValueFactory (cellData -> cellData.getValue ( ).labcommentProperty ( ));

@@ -16,6 +16,8 @@ public class TabWetReport implements BaseModel {
     @DatabaseField(generatedId = true)
     private int idWetReport;
 
+
+    //date
     @DatabaseField(columnName = "CREATE_DATE_REPORT")  // wycięte ,mdataType = DataType.LONG_STRING
     private Date createDateReport;
 /*
@@ -25,14 +27,16 @@ public class TabWetReport implements BaseModel {
     @DatabaseField(columnName = "EDITION_DATE_REPORT") //// wycięte ,mdataType = DataType.LONG_STRING
     private Date editionDateReport;
 
+
+  //produkt
     @DatabaseField(columnName = "idWetProductForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh =
             true,
             canBeNull = true)
     private TabWetProduct tabWetProductForeign;
 
-   @DatabaseField(columnName = "idWetGoodsForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh =
+    @DatabaseField(columnName = "idWetGoodsForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh =
            true, canBeNull = true)
-   private TabWetGoods tabWetGoodsForegin;
+    private TabWetGoods tabWetGoodsForegin;
 
 
     @DatabaseField(columnName = "COMPLEMENTARY_INFORMATION")
@@ -42,10 +46,17 @@ public class TabWetReport implements BaseModel {
             canBeNull = true)
     private TabWetBase tabWetBaseForegin;
 
+    //user
     @DatabaseField(columnName = "idUserForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true,
             canBeNull = true)
     private TabUsers tabUsersForegin;
 
+    @DatabaseField(columnName = "idUserEditForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh =
+            true,
+            canBeNull = true)
+    private TabUsers tabUsersEditForegin;
+
+    //---
     @DatabaseField(columnName = "PACK")
     private int pack;
 
@@ -66,8 +77,8 @@ public class TabWetReport implements BaseModel {
     private Status statusLabForegin;
 /*
     @DatabaseField(columnName = "idUserForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true,
-            canBeNull = true)
-    private Status userLabForegin;
+            canBeNull = false)
+    private TabUsers tabUsersLabForegin;
 */
     @DatabaseField(columnName = "LAB_COMMENT")
     private String labComment;
@@ -186,5 +197,13 @@ public class TabWetReport implements BaseModel {
 
     public void setTabWetGoodsForegin(TabWetGoods tabWetGoodsForegin) {
         this.tabWetGoodsForegin = tabWetGoodsForegin;
+    }
+
+    public TabUsers getTabUsersEditForegin() {
+        return tabUsersEditForegin;
+    }
+
+    public void setTabUsersEditForegin(TabUsers tabUsersEditForegin) {
+        this.tabUsersEditForegin = tabUsersEditForegin;
     }
 }

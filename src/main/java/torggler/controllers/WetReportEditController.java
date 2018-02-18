@@ -7,8 +7,12 @@ import javafx.stage.Stage;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import torggler.ApplicationException;
+import torggler.UserSingleton;
+import torggler.dao.UserDao;
 import torggler.modelFx.BaseFx;
+import torggler.modelFx.OrderModel;
 import torggler.modelFx.WetReportEditModel;
+import torggler.tables.TabUsers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +25,9 @@ public class WetReportEditController {
 
     @FXML
     private Label lbl_edit_time;
+
+    @FXML
+    private Label lblUser;
 
     @FXML
     private TextArea textAreaEditExtendedInfo;
@@ -50,13 +57,13 @@ public class WetReportEditController {
     public void initialize(){
         this.wetReportEditModel = new WetReportEditModel ();
 
-
         try {
             wetReportEditModel.initBaseList ();
         } catch (ApplicationException e) {
             e.printStackTrace ( );
         }
 
+        this.lblUser.setText (UserSingleton.getInstance ().log_in);
         bindigsTime ();
     }
 
@@ -81,7 +88,10 @@ public class WetReportEditController {
 
 
 
+
+
         wetReportEditModel.getEditOrderFxObjectProperty ().edit_dateProperty ().set (LocalDateTime.now ());
+
 
         //Produkt a jak do labelki
 
@@ -116,8 +126,6 @@ public class WetReportEditController {
 
     @FXML
     void onActionSaveChanges(ActionEvent event) {
-
-        //uwaga brakuje usera do prawidlowego zapisu!!!!!!!!! //w bazie rozdzielic userow
 
         try {
             this.wetReportEditModel.saveChangesInDataBase ();

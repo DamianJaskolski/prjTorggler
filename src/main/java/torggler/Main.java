@@ -80,14 +80,13 @@ public class Main extends Application {
 /*
     //Report
         TableUtils.dropTable(connectionSource, TabWetReport.class, true);
-        TableUtils.createTableIfNotExists(connectionSource, TabWetReport.class);
+        TableUtils.createTable (connectionSource, TabWetReport.class);
         Dao<TabWetReport, Integer> tabWetReportIntegerDao = DaoManager.createDao(connectionSource, TabWetReport.class);
         TabWetReport tabWetReport = DataCreator.tabWetReport();
         tabWetReportIntegerDao.createOrUpdate(tabWetReport);
         connectionSource.close();
 
 */
-
 /*
         //Status
         TableUtils.dropTable(connectionSource,Status.class,true);

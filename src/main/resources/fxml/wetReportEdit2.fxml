@@ -81,7 +81,7 @@
                </GridPane.margin>
             </Label>
             <Label text="Użytkownik edytujący:" textFill="#8c8c8c" GridPane.rowIndex="1" />
-            <Label text="-" textFill="#8c8c8c" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="lblUser" text="-" textFill="#8c8c8c" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>

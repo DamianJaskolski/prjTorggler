@@ -4,7 +4,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.fxml.FXML;
 import torggler.ApplicationException;
+import torggler.controllers.WetReportController;
 import torggler.dao.BaseDao;
 import torggler.dao.GoodsDao;
 import torggler.dao.ReportDao;
@@ -18,6 +21,7 @@ import torggler.utils.converters.ConverterGoods;
 import torggler.utils.converters.ConverterReport;
 import torggler.utils.converters.ConverterUser;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -44,10 +48,40 @@ public class ReportModel {
     private ObjectProperty<UserFx> userFxObjectProperty = new SimpleObjectProperty<> ();
     //lista przechowuje pełną listę - przytrzymana do odświeżenia
     private List<OrderFx> orderFxList = new ArrayList<> ( );
+    //filtrowanie daty
+    FilteredList<OrderFx> filteredData = new FilteredList<>(orderFxObservableList, person -> true);
+
+
+private WetReportController wetReportController;
+
+
+    public void initialize() {
+
+
+        this.wetReportController.checkBox_today.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+
+                filteredData.setPredicate (person -> isDayToday(person));
+                this.wetReportController.tabViewWetReport.setItems (filteredData);
+
+            } else {
+                this.wetReportController.tabViewWetReport.setItems (orderFxObservableList);
+
+            }
+        });
+
+    }
+
+    private boolean isDayToday(OrderFx person) {
+        return person.getCreate_date ().toLocalDate().isEqual(LocalDate.now());
+    }
 
     //Ta lista będzie przechowywać CAŁĄ zawartość do przywrócenia po filtrowaniu javafx#48 1400
 
     public void initnew() throws ApplicationException {
+
+
+
         ReportDao reportDao = new ReportDao ();
         List<TabWetReport> tabWetReports = reportDao.queryForAll (TabWetReport.class);
         orderFxList.clear ();
@@ -61,7 +95,11 @@ public class ReportModel {
         intGoods ();
         intUser();
 
+
     }
+
+
+
 
     //Wypełnienie baseFxObservableList (rodzaje bazy do tynków)
     private void initBase() throws ApplicationException {

@@ -59,6 +59,7 @@ public class ConverterReport {
        orderFx.setOrder_realize (tabWetReport.getOrder_realize ());
        orderFx.setComment (tabWetReport.getComment ());
        orderFx.setUserFxCreate (ConverterUser.convertToUserFx (tabWetReport.getTabUsersForegin ()));
+       orderFx.setUserFxEdit (ConverterUser.convertToUserFx (tabWetReport.getTabUsersEditForegin ()));
       // orderFx.setCreate_date (ConverterDate.convertToLocalDate (tabWetReport.getCreateDateReport ())) ;
        orderFx.setLabcomment (tabWetReport.getLabComment ());
        orderFx.setStatusFx((ConverterStatus.convertToLabFX(tabWetReport.getStatusLabForegin())));

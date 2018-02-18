@@ -1,20 +1,18 @@
 package torggler.modelFx;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import torggler.ApplicationException;
-import torggler.dao.BaseDao;
-import torggler.dao.GoodsDao;
-import torggler.dao.ReportDao;
-import torggler.dao.StatusDao;
-import torggler.tables.Status;
-import torggler.tables.TabWetBase;
-import torggler.tables.TabWetGoods;
-import torggler.tables.TabWetReport;
+import torggler.UserSingleton;
+import torggler.controllers.WetReportController;
+import torggler.dao.*;
+import torggler.tables.*;
 import torggler.utils.converters.ConverterBase;
 import torggler.utils.converters.ConverterReport;
 
@@ -24,6 +22,8 @@ import java.util.List;
 public class WetReportEditModel {
     private ObjectProperty<OrderFx> EditOrderFxObjectProperty = new SimpleObjectProperty<> (new OrderFx ());
     private ObservableList<BaseFx> baseFxObservableList  = FXCollections.observableArrayList();
+
+    public WetReportController wetReportController;
 
     public void initBaseList()throws ApplicationException{
 
@@ -59,6 +59,36 @@ public class WetReportEditModel {
                 .getGoodsProperty ().getIdWetGoodsProperty ());
         tabWetReport.setTabWetGoodsForegin (tabWetGoods);
 
+
+        UserSingleton us = UserSingleton.getInstance();
+        IntegerProperty intProperty = new SimpleIntegerProperty (us.id);
+
+        UserFx userFx = new UserFx ();
+        userFx.setId (us.id);
+        userFx.setLogin(us.log_in);
+        userFx.setName(us.name);
+        userFx.setSurname(us.surname);
+        userFx.setPassword(us.password);
+        userFx.setDepartment(us.department_lg);
+
+
+
+        getEditOrderFxObjectProperty ().getUserFxEdit ().idProperty ().bind(intProperty);
+
+        //  tabWetReport.setTabUsersEditForegin (this.EditOrderFxObjectProperty.get ().getUserFxEdit ());
+
+        UserDao userDao = new UserDao();
+        TabUsers tabUsers = userDao.findById (TabUsers.class, this.getEditOrderFxObjectProperty().getUserFxEdit ()
+                .getId());
+        tabWetReport.setTabUsersEditForegin (tabUsers);
+
+
+        TabUsers tabUsers2 = userDao.findById (TabUsers.class, this.getEditOrderFxObjectProperty().getUserFxCreate ()
+                .getId());
+
+        tabWetReport.setTabUsersForegin (tabUsers2);
+
+
         //  ----end pobieranie danych niezmienialnych ---------------------
 
 
@@ -66,7 +96,7 @@ public class WetReportEditModel {
         reportDao.creatOrUpdate (tabWetReport);
 
 
-
+      // Filt sprawdzić !!!!!!! wetReportController.loadTable ();
     }
 
 

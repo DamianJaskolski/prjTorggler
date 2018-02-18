@@ -26,7 +26,7 @@ public class OrderFx {
    // private ObjectProperty<Time> timeObjectProperty = new SimpleObjectProperty<>(Lo)
     private ObjectProperty<UserFx> userFxCreate = new SimpleObjectProperty<> (new UserFx () );
     private ObjectProperty<LocalDateTime> edit_date = new SimpleObjectProperty<> (LocalDateTime.now ());
-    private ObjectProperty<UserFx> userFxEdit = new SimpleObjectProperty<> ( );
+    private ObjectProperty<UserFx> userFxEdit = new SimpleObjectProperty<> (new UserFx () );
 
     private StringProperty labcomment = new SimpleStringProperty ( );
     private ObjectProperty<LabFx> statusFx = new SimpleObjectProperty<> ( );
@@ -155,23 +155,22 @@ public class OrderFx {
         return userFxCreate;
     }
 
-    public void setUserFxCreate(UserFx userFxCreate) {
-        this.userFxCreate.set (userFxCreate);
-    }
 
+    //users
+    public void setUserFxCreate(UserFx userFxCreate) { this.userFxCreate.set (userFxCreate); }
 
     public UserFx getUserFxEdit() {
         return userFxEdit.get ( );
     }
 
-    public ObjectProperty<UserFx> userFxEditProperty() {
-        return userFxEdit;
-    }
+    public ObjectProperty<UserFx> userFxEditProperty() { return userFxEdit; }
 
     public void setUserFxEdit(UserFx userFxEdit) {
         this.userFxEdit.set (userFxEdit);
     }
 
+
+    //---
     public String getCompInfo() {
         return compInfo.get ( );
     }

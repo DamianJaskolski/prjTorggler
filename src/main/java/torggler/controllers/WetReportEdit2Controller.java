@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import torggler.ApplicationException;
+import torggler.UserSingleton;
 import torggler.modelFx.BaseFx;
 import torggler.modelFx.WetReportEdit2Model;
 import torggler.modelFx.WetReportEditModel;
@@ -21,6 +22,9 @@ public class WetReportEdit2Controller {
 
     @FXML
     private Label lbl_edit_time;
+
+    @FXML
+    private Label lblUser;
 
     @FXML
     private TextArea textAreaEditExtendedInfo;
@@ -58,6 +62,7 @@ public class WetReportEdit2Controller {
             e.printStackTrace ( );
         }
 
+        this.lblUser.setText (UserSingleton.getInstance ().log_in);
         bindigsTime ();
     }
 
@@ -105,7 +110,7 @@ public class WetReportEdit2Controller {
     @FXML
     void onActionSaveChanges(ActionEvent event) {
 
-        //uwaga brakuje usera do prawidlowego zapisu!!!!!!!!! //w bazie rozdzielic userow
+
 
         try {
             this.wetReportEdit2Model.saveChangesInDataBase ();

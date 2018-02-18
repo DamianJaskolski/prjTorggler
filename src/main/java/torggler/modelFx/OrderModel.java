@@ -183,20 +183,20 @@ public void initTable() throws ApplicationException {
                     .getGoodsProperty().getIdWetGoodsProperty());
             tabWetReport.setTabWetGoodsForegin(tabWetGoods);
 
+
             UserDao userDao = new UserDao();
-            TabUsers tabUsers = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFxCreate()
-                    .getId());
+            TabUsers tabUsers = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFxCreate().getId());
             tabWetReport.setTabUsersForegin(tabUsers);
 
+            TabUsers tabUsers2 = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFxEdit ()
+                    .getId());
+            tabWetReport.setTabUsersEditForegin (tabUsers2);
 
             tabWetReport.setCompInfo (this.orderFxObjectProperty.get ().getCompInfo ());
             tabWetReport.setPack (this.orderFxObjectProperty.get ( ).getPack ( ));
             tabWetReport.setOrder_quantity (this.orderFxObjectProperty.get ( ).getOrder_quantity ( ));
             tabWetReport.setOrder_realize (this.orderFxObjectProperty.get ( ).getOrder_realize ( ));
             tabWetReport.setComment (this.orderFxObjectProperty.get ( ).getComment ( ));
-            //tabWetReport.setStatusLabForegin(this.orderFxObjectProperty.get());
-
-
 
             tabWetReportIntegerDao.createOrUpdate (tabWetReport);
 

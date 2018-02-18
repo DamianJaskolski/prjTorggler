@@ -56,11 +56,13 @@ public class DataCreator {
         tabWetReport.setCompInfo ("Informacja uzupełniająca");
         tabWetReport.setTabWetBaseForegin(tabWetBase());
         tabWetReport.setTabUsersForegin(tabUsers());
+        tabWetReport.setTabUsersEditForegin (tabUsers ());
         tabWetReport.setPack(25);
         tabWetReport.setOrder_quantity(100);
         tabWetReport.setOrder_realize(75);
         tabWetReport.setComment("To jest komentarz do zamówienia lub realizacji");
         tabWetReport.setLabComment ("Zgodny");
+      //  tabWetReport.setTabUsersLabForegin (tabUsers ());
         tabWetReport.setStatusLabForegin(status());
         return tabWetReport;
     }

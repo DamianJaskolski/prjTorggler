@@ -1,18 +1,15 @@
 package torggler.modelFx;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import torggler.ApplicationException;
-import torggler.dao.BaseDao;
-import torggler.dao.GoodsDao;
-import torggler.dao.ReportDao;
-import torggler.dao.StatusDao;
-import torggler.tables.Status;
-import torggler.tables.TabWetBase;
-import torggler.tables.TabWetGoods;
-import torggler.tables.TabWetReport;
+import torggler.UserSingleton;
+import torggler.dao.*;
+import torggler.tables.*;
 import torggler.utils.converters.ConverterBase;
 import torggler.utils.converters.ConverterReport;
 
@@ -59,9 +56,40 @@ public class WetReportEdit2Model {
                 .getGoodsProperty ().getIdWetGoodsProperty ());
         tabWetReport.setTabWetGoodsForegin (tabWetGoods);
 
+
+
         //  ----end pobieranie danych niezmienialnych ---------------------
 
+//users
+        UserSingleton us = UserSingleton.getInstance();
+        IntegerProperty intProperty = new SimpleIntegerProperty (us.id);
 
+        UserFx userFx = new UserFx ();
+        userFx.setId (us.id);
+        userFx.setLogin(us.log_in);
+        userFx.setName(us.name);
+        userFx.setSurname(us.surname);
+        userFx.setPassword(us.password);
+        userFx.setDepartment(us.department_lg);
+
+
+
+        getEdit2OrderFxObjectProperty ().getUserFxEdit ().idProperty ().bind(intProperty);
+
+        //  tabWetReport.setTabUsersEditForegin (this.EditOrderFxObjectProperty.get ().getUserFxEdit ());
+
+        UserDao userDao = new UserDao();
+        TabUsers tabUsers = userDao.findById (TabUsers.class, this.getEdit2OrderFxObjectProperty().getUserFxEdit ()
+                .getId());
+        tabWetReport.setTabUsersEditForegin (tabUsers);
+
+
+        TabUsers tabUsers2 = userDao.findById (TabUsers.class, this.getEdit2OrderFxObjectProperty().getUserFxCreate ()
+                .getId());
+
+        //user end
+
+        tabWetReport.setTabUsersForegin (tabUsers2);
         ReportDao reportDao = new ReportDao ();
         reportDao.creatOrUpdate (tabWetReport);
 
