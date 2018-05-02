@@ -7,8 +7,9 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.sun.org.apache.xpath.internal.operations.Or;
-import javafx.beans.property.*;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -18,44 +19,27 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import javafx.util.converter.NumberStringConverter;
-import sun.util.calendar.LocalGregorianCalendar;
-import torggler.ApplicationException;
-import torggler.FxmlUtils;
-import torggler.UserSingleton;
-import torggler.dao.ReportDao;
-import torggler.modelFx.*;
-import torggler.BaseModel;
+import torggler.*;
 import torggler.dao.BaseDao;
-import torggler.tables.Status;
-import torggler.tables.TabUsers;
-import torggler.tables.TabWetBase;
-import torggler.tables.TabWetReport;
-import torggler.utils.converters.ConverterBase;
-import torggler.utils.converters.ConverterReport;
+import torggler.modelFx.*;
+import torggler.tables.*;
+import torggler.PrintCsv;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
 
 
 public class WetReportController implements BaseModel {
@@ -64,9 +48,6 @@ public class WetReportController implements BaseModel {
 
     @FXML
     private BorderPane LabBorderPane;
-
-    public ToggleButton btnAddWetOrder;
-
 
     @FXML
     public Label create_date;
@@ -111,18 +92,27 @@ public class WetReportController implements BaseModel {
     private MenuItem deleteMenuItem;
 
     @FXML
-    private DatePicker date1;
+    public DatePicker date1;
 
     @FXML
-    private DatePicker date2;
+    public DatePicker date2;
+
+    @FXML
+    public DatePicker commissionDate;
 
     @FXML
     public CheckBox checkBox_today;
 
+    @FXML
+    private CheckBox checkBox_today_commission;
 
+    @FXML
+    private Button btnPrint;
+
+    @FXML
     private ConnectionSource connectionSource;
 
-    public static final String URL = "jdbc:postgresql://127.0.0.1:5432/dbTorggler";
+    public static final String URL = "jdbc:postgresql://localhost:5432/dbTorggler";
     private static final String USER = "postgres";
     private static final String PASSWORD = "dagdam";
 
@@ -135,7 +125,7 @@ public class WetReportController implements BaseModel {
     //---------------------------------------Table------------------------------------------
 
     @FXML
-    private TableView<OrderFx> tableViewWetReport;
+    public TableView<OrderFx> tableViewWetReport;
 
     @FXML
     private TableColumn<OrderFx, Integer> ColIDORDER;
@@ -151,7 +141,7 @@ public class WetReportController implements BaseModel {
     private TableColumn<OrderFx, BaseFx> colIDWETBASEFOREIGN;
 
     @FXML
-    private TableColumn<OrderFx, Integer> colPACK;
+    private TableColumn<OrderFx, Double> colPACK;
 
     @FXML
     private TableColumn<OrderFx, Double> colORDER_QUANITY;
@@ -166,6 +156,9 @@ public class WetReportController implements BaseModel {
     private TableColumn<OrderFx, String> colCOMMENT;
 
     @FXML
+    private TableColumn<OrderFx, LocalDate> colDateCommission;
+
+    @FXML
     private TableColumn<OrderFx, LocalDateTime> colCREATE_DATE_REPORT;
 
     @FXML
@@ -178,19 +171,35 @@ public class WetReportController implements BaseModel {
     private TableColumn<OrderFx, UserFx> colIDUSERFOREIGNEdit;
 
     @FXML
-    private TableColumn<OrderFx, String> colWETPRODUCTLABCOMMENT;
-
-    @FXML
-    private TableColumn<OrderFx, OrderFx> colWETPRODUCTLABEDIT;
-
-    @FXML
     private TableColumn<OrderFx, OrderFx> colWET_PRODUCT_EDIT;
 
+    //Warehouseman
+    @FXML
+    private TableColumn<OrderFx, OrderFx> colWarehouseman;
+    @FXML
+    private TableColumn<OrderFx, UserFx> colIDWarehouseman;
+    @FXML
+    private TableColumn<OrderFx, String> colWhmStatus;
+    @FXML
+    private TableColumn<OrderFx, Double> colWhmAmount;
+    @FXML
+    private TableColumn<OrderFx, String> colWhmComment;
+
+    //Laboratory
+    @FXML
+    private TableColumn<OrderFx, OrderFx> colWETPRODUCTLABEDIT;
+    @FXML
+    private TableColumn<OrderFx, UserFx> colUserLab;
     @FXML
     private TableColumn<OrderFx, LabFx> colLAB_STATUS;
+    @FXML
+    private TableColumn<OrderFx, String> colWETPRODUCTLABCOMMENT;
 
+    //Delete
     @FXML
     private TableColumn<OrderFx, OrderFx> colWETPRODUCT_DELETE;
+
+
 
     //Tab Default value-------------------------------------------------------------
 
@@ -235,11 +244,18 @@ public class WetReportController implements BaseModel {
     //1. wypełniamy listę danymi -> w sekcji FILTER INTIALIZE "wypełnianie danymi"
     private List<GoodsProperty> goodsPropertyList = new ArrayList<> ();
     //filtrowanie daty
-    FilteredList<OrderFx> filteredData = new FilteredList<>(orderFxObservableList, person -> true);
+  //  FilteredList<OrderFx> filteredData = new FilteredList<>(orderFxObservableList, person -> true);
     //---------------------------------------END FILTER-------------------------------------
+
+    //zmienna do przechowywania wartości wybranej z ComboBox = cmbWet który indexuje nazyw produktu podczas składania
+    // zamówienia.
+    public String valueStatus;
 
     public void initialize() {
 
+
+        check();
+        check2();
         /* druga metoda uzupełnia UserFx, do pobrania id
         try {
             setLoginUser();
@@ -248,22 +264,12 @@ public class WetReportController implements BaseModel {
         }
         */
 
-        this.checkBox_today.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-
-                filteredData.setPredicate (person -> isDayToday(person));
-                this.tabViewWetReport.setItems (filteredData);
-
-            } else {
-                this.tabViewWetReport.setItems (orderFxObservableList);
-
-            }
-        });
 
 
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         String text = date.format(formatter);
+
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!UZUPEŁNIANIE TABELI V2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //modelFx/ReportModel
@@ -302,21 +308,9 @@ public class WetReportController implements BaseModel {
 
         //END COMBOBOX
 
-        //BINDOWANIE FORMULARZ TAB1 - ZAKŁADKA WPROWADZANIE DANYCH------------------------------------------------------
-        this.orderModel = new OrderModel ( );
-        try {
-            this.orderModel.init ( );
-        } catch (ApplicationException e) {
-            e.printStackTrace ( );
-        }
-
-        //userid---------------------
-
-        this.lblUser.setText (UserSingleton.getInstance ().log_in);
-        this.lblUserID.setText (UserSingleton.getInstance ().id.toString ());
-
         UserSingleton us = UserSingleton.getInstance();
         IntegerProperty intProperty = new SimpleIntegerProperty(us.id);
+        IntegerProperty intProperty2 = new SimpleIntegerProperty (3);
 
         UserFx userFx = new UserFx ();
         userFx.setId (us.id);
@@ -326,62 +320,11 @@ public class WetReportController implements BaseModel {
         userFx.setPassword(us.password);
         userFx.setDepartment(us.department_lg);
 
-        this.orderModel.getOrderFxObjectProperty ().getUserFxCreate ().idProperty ().bind (intProperty);
-        this.orderModel.getOrderFxObjectProperty ().getUserFxEdit ().idProperty ().bind(intProperty);
+        System.out.println ("TUTAJ" + us.department_lg );
 
-/*
-        this.orderModel.getOrderFxObjectProperty ().getUserFxCreate ().idProperty ().bind (userFxObservableList.get
-              (0).idProperty());
-*/
-        //end userid-----------------
+        //BINDOWANIE FORMULARZ TAB1 - ZAKŁADKA WPROWADZANIE DANYCH------------------------------------------------------
 
-        this.wetOrderedQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
-                .order_quantityProperty ( ), new NumberStringConverter ( ));
-
-        //this.lblUserID.textProperty ().bindBidirectional (this.orderModel.getOrderFxObjectProperty ()
-          //      .userFxCreateProperty ());
-
-
-     //   this.orderModel.getOrderFxObjectProperty ().userFxCreateProperty ().bind ();
-        //this.cmbBoxBase.getSelectionModel ().select (1);
-        this.cmbBoxBase.setItems (this.orderModel.getBaseFxObservableList ( ));
-        this.orderModel.getOrderFxObjectProperty ( ).cmbBoxBaseFXProperty ( ).bind (this.cmbBoxBase.valueProperty ( ));
-
-        /*
-        Label loadLabel = new Label("brak");
-        this.cmboBoxStatusStart.setPlaceholder(loadLabel);
-        this.orderModel.getOrderFxObjectProperty().cmbBoxProductFXProperty().bind();
-        this.orderModel.getOrderFxObjectProperty().cmbBoxProductFXProperty().addListener(cmboBoxStatusStart.setItems());
-*/
-
-        this.cmboBoxStatusStart.setItems(this.orderModel.getLabFxObservableList());
-        cmboBoxStatusStart.getSelectionModel().select(1);
-        this.orderModel.getOrderFxObjectProperty().statusFxProperty().bind(this.cmboBoxStatusStart.valueProperty());
-
-
-        this.cmbWetProduct.setItems (this.orderModel.getGoodsPropertyObservableList());
-        this.orderModel.getOrderFxObjectProperty().goodsPropertyProperty().bind(this.cmbWetProduct.valueProperty());
-
-
-        DateTimeFormatter formatterr = DateTimeFormatter.ISO_DATE_TIME;
-        this.create_date.textProperty().bindBidirectional(this.orderModel.getOrderFxObjectProperty().create_dateProperty(), new
-                //LocalDateStringConverter(formatterr,formatterr));
-                LocalDateTimeStringConverter());
-
-        this.wetOrderPacket.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( ).packProperty ( ), new
-                NumberStringConverter ( ));
-        this.wetOrderedQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
-                .order_quantityProperty ( ), new NumberStringConverter ( ));
-
-        // Podczas składania zamówienia nie wiadomo ile będzie zrealizowane
-        // this.wedMadeQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
-        //      .order_realizeProperty ( ), new NumberStringConverter ( ));
-
-        this.orderModel.getOrderFxObjectProperty ( ).commentProperty ( ).bind (this.wetOrderComment.textProperty ( ));
-        this.orderModel.getOrderFxObjectProperty ( ).compInfoProperty ( ).bind (this.wetOrderedCompInfo.textProperty ( ));
-        //this.orderModel.getOrderFxObjectProperty().statusFxProperty().bind()(this.tfDefaultValueLab.textProperty());
-
-
+        firstbindings();
         //END BINDOWANIE-----------------------------------------------------------------------------------------------
 
 /*
@@ -417,7 +360,7 @@ public class WetReportController implements BaseModel {
                 }
 
                 //Gdy komórka ma wartości wstaw przycisk w przeciwynym razie nie dodawaj-------------------------------
-                if (!empty) {
+                if ( us.department_lg.equals("Administrator")) {
                     setGraphic (button);
 
                     button.setOnAction (event -> {
@@ -428,6 +371,11 @@ public class WetReportController implements BaseModel {
                             e.printStackTrace ( );
                         }
                     });
+                }else {
+                    if (!empty) {
+                        setGraphic(button);
+                        button.setOnAction(event -> { DialogsUtils.infoApplication(); });
+                    }
                 }
                 //End wstawianie przycisku w tabele -------------------------------------------------------------------
 
@@ -453,7 +401,7 @@ public class WetReportController implements BaseModel {
                 }
 
                 //Gdy komórka ma wartości wstaw przycisk w przeciwynym razie nie dodawaj-------------------------------
-                if (!empty) {
+                if (us.department_lg.equals("Laboratory")|| us.department_lg.equals("Administrator")) {
                     setGraphic (button);
 
                     button.setOnAction (event -> {
@@ -473,11 +421,19 @@ public class WetReportController implements BaseModel {
                         //controller.bindings ();
 
                         Stage stage = new Stage ();
+                        stage.getIcons().add(new Image("/img/logoSmall.png"));
+                        stage.setTitle ("Zatwierdzanie przez laboratorium.");
                         stage.setScene (scene);
                         stage.initModality (Modality.APPLICATION_MODAL);
                         stage.showAndWait ();
+                        loadTable ();
 
                     });
+                }else {
+                    if (!empty) {
+                        setGraphic(button);
+                        button.setOnAction(event -> { DialogsUtils.infoApplication(); });
+                    }
                 }
                 //End wstawianie przycisku w tabele -------------------------------------------------------------------
 
@@ -504,7 +460,7 @@ public class WetReportController implements BaseModel {
                 }
 
                 //Gdy komórka ma wartości wstaw przycisk w przeciwynym razie nie dodawaj-------------------------------
-                if (!empty) {
+                if (us.department_lg.equals("Mokra")|| us.department_lg.equals("Administrator")) {
                     setGraphic (button);
 
                     button.setOnAction (event -> {
@@ -523,13 +479,23 @@ public class WetReportController implements BaseModel {
                         reportEdit2Controller.bindings(); //!!! drugie bindowanie z vartoscią = i
 
                         Stage stage = new Stage ();
+                        stage.getIcons().add(new Image("/img/logoSmall.png"));
+                        stage.setTitle ("Realizacja zlecenia przez produkcję mokrą.");
                         stage.setScene (scene);
                         stage.initModality (Modality.APPLICATION_MODAL);
                         stage.showAndWait ();
                         loadTable ();
 
                     });
+                } else {
+                    if (!empty) {
+                        setGraphic(button);
+                        button.setOnAction(event -> { DialogsUtils.infoApplication(); });
+                    }
                 }
+
+
+
                 //End wstawianie przycisku w tabele -------------------------------------------------------------------
 
 
@@ -555,59 +521,239 @@ public class WetReportController implements BaseModel {
                 }
 
                 //Gdy komórka ma wartości wstaw przycisk w przeciwynym razie nie dodawaj-------------------------------
-                if (!empty) {
-                    setGraphic (button);
+              //  if (us.id == 1 && !empty) {
+                    if (us.department_lg.equals("Logisytka") || us.department_lg.equals("Administrator")){
+                    setGraphic(button);
 
-                    button.setOnAction (event -> {
-                        FXMLLoader loader = FxmlUtils.getLoader ("/fxml/wetReportEdit.fxml");
+                    button.setOnAction(event -> {
+                        FXMLLoader loader = FxmlUtils.getLoader("/fxml/wetReportEdit.fxml");
                         Scene scene = null;
 
                         try {
-                            scene = new Scene (loader.load ());
+                            scene = new Scene(loader.load());
                         } catch (IOException e) {
-                            e.printStackTrace ( );
+                            e.printStackTrace();
                         }
 
-
-                        WetReportEditController reportEditController = loader.getController ();
-                        reportEditController.getWetReportEditModel ().setEditOrderFxObjectProperty (item);
+                        WetReportEditController reportEditController = loader.getController();
+                        reportEditController.getWetReportEditModel().setEditOrderFxObjectProperty(item);
                         reportEditController.bindings(); //!!! drugie bindowanie z vartoscią = i
 
-                        Stage stage = new Stage ();
-                        stage.setScene (scene);
-                        stage.initModality (Modality.APPLICATION_MODAL);
-                        stage.showAndWait ();
-                        loadTable ();
-
+                        Stage stage = new Stage();
+                        stage.getIcons().add(new Image("/img/logoSmall.png"));
+                        stage.setTitle ("Edycja zlecenia produkcyjnego.");
+                        stage.setScene(scene);
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.showAndWait();
+                        loadTable();
                     });
-                }
+                } else {
+                        if (!empty) {
+                            setGraphic(button);
+                            button.setOnAction(event -> { DialogsUtils.infoApplication(); });
+                        }
+                    }
+
                 //End wstawianie przycisku w tabele -------------------------------------------------------------------
 
 
             }
         });
 
-// END EDIT------------------------------------------------------------------------------------------------------------
+// END EDIT--------------------------------------------------------------------------------------------------
 
+// Wharehouseman-----------------------------------------------------------------------------------------------------
+//#50
+        this.colWarehouseman.setCellFactory (param -> new TableCell<OrderFx, OrderFx> ( ) {
+            Button button = createButton ("/img/lifttruck_32.png");
+
+            @Override
+            protected void updateItem(OrderFx item, boolean empty) {
+                super.updateItem (item, empty);
+
+                // kasowanie grfiki jeśli komórka pusta #49 12:00
+                if (empty) {
+                    setGraphic (null);
+                    return;
+                }
+
+                //Gdy komórka ma wartości wstaw przycisk w przeciwynym razie nie dodawaj-------------------------------
+                if (us.department_lg.equals("Magazyn")|| us.department_lg.equals("Administrator")) {
+
+                    setGraphic(button);
+
+                    button.setOnAction(event -> {
+                        FXMLLoader loader = FxmlUtils.getLoader("/fxml/warehouseman.fxml");
+                        Scene scene = null;
+
+                        try {
+                            scene = new Scene(loader.load());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        WarehousemanController warehousemanController = loader.getController();
+                        warehousemanController.getWarehousemanModel().setWhmOrderFxObjectProperty(item);
+                        warehousemanController.bindings();
+
+                        Stage stage = new Stage();
+                        stage.getIcons().add(new Image("/img/logoSmall.png"));
+                        stage.setTitle ("Przekazanie na magazyn");
+                        stage.setScene(scene);
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.showAndWait();
+                        loadTable();
+                    });
+                } else {
+                    if (!empty) {
+                        setGraphic(button);
+                        button.setOnAction(event -> { DialogsUtils.infoApplication(); });
+                    }
+                }
+
+                //End wstawianie przycisku w tabele -------------------------------------------------------------------
+
+
+            }
+        });
+
+       //Color
+        colLAB_STATUS.setCellFactory((TableColumn<OrderFx, LabFx> column) -> new TableCell<OrderFx, LabFx>() {
+            @Override protected void updateItem(LabFx labFx, boolean empty) {
+                super.updateItem(labFx, empty);
+                if (labFx != null) {
+                    setText(labFx.toString());
+                    if (labFx.toString().equals("Niezgodna")) {
+                        setStyle("-fx-background-color:lightcoral");
+                    } else if (labFx.toString().equals("Zgodna")) {
+                        setStyle("-fx-background-color:LightGreen");
+                    } else if (labFx.toString().equals("Zawieszona")) {
+                        setStyle("-fx-background-color:gold");
+                    } else if (labFx.toString().equals("Nie podlega")) {
+                        setStyle("-fx-background-color:lightblue");
+                    }
+                } else {
+                    setText(null);
+                    setStyle(null);
+                }
+            }
+        });
+           //End Color
 
 
     }
+
+
+public void firstbindings(){
+    this.orderModel = new OrderModel ( );
+    try {
+        this.orderModel.init ( );
+    } catch (ApplicationException e) {
+        e.printStackTrace ( );
+    }
+
+    //userid---------------------
+
+    this.lblUser.setText (UserSingleton.getInstance ().log_in);
+    this.lblUserID.setText (UserSingleton.getInstance ().id.toString ());
+
+    UserSingleton us = UserSingleton.getInstance();
+    IntegerProperty intProperty = new SimpleIntegerProperty(us.id);
+    IntegerProperty intProperty2 = new SimpleIntegerProperty (3);
+
+    UserFx userFx = new UserFx ();
+    userFx.setId (us.id);
+    userFx.setLogin(us.log_in);
+    userFx.setName(us.name);
+    userFx.setSurname(us.surname);
+    userFx.setPassword(us.password);
+    userFx.setDepartment(us.department_lg);
+
+    this.orderModel.getOrderFxObjectProperty ().getUserFxCreate ().idProperty ().bind (intProperty);
+    this.orderModel.getOrderFxObjectProperty ().getUserFxEdit ().idProperty ().bind(intProperty2);
+    this.orderModel.getOrderFxObjectProperty ().getUserFxLab ().idProperty ().bind (intProperty2);
+    this.orderModel.getOrderFxObjectProperty ().getUserFXWhm().idProperty().bind(intProperty2);
+
 /*
-    private boolean dateBetween(Person person) {
-        LocalDate date1 = this.date1.getValue();
-        LocalDate date2 = this.date2.getValue();
-        boolean isAfter = person.getBirthday().toLocalDate().isAfter(date1) || person.getBirthday().toLocalDate().isEqual(date1);
-        boolean isBefore = person.getBirthday().toLocalDate().isBefore(date2)|| person.getBirthday().toLocalDate().isEqual(date2);
-        return isAfter && isBefore;
-    }
-  */
+        this.orderModel.getOrderFxObjectProperty ().getUserFxCreate ().idProperty ().bind (userFxObservableList.get
+              (0).idProperty());
+*/
+    //end userid-----------------
 
-    private boolean isDayToday(OrderFx person) {
-        return person.getCreate_date ().toLocalDate().isEqual(LocalDate.now());
+    this.wetOrderedQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
+            .order_quantityProperty ( ), new NumberStringConverter ( ));
+
+    //this.lblUserID.textProperty ().bindBidirectional (this.orderModel.getOrderFxObjectProperty ()
+    //      .userFxCreateProperty ());
+
+
+    //   this.orderModel.getOrderFxObjectProperty ().userFxCreateProperty ().bind ();
+    //
+    this.cmbBoxBase.setItems (this.orderModel.getBaseFxObservableList ());
+    this.cmbBoxBase.getSelectionModel ().select (1);
+    this.orderModel.getOrderFxObjectProperty ( ).cmbBoxBaseFXProperty ( ).bind (this.cmbBoxBase.valueProperty ());
+
+        /*
+        Label loadLabel = new Label("brak");
+        this.cmboBoxStatusStart.setPlaceholder(loadLabel);
+        this.orderModel.getOrderFxObjectProperty().cmbBoxProductFXProperty().bind();
+        this.orderModel.getOrderFxObjectProperty().cmbBoxProductFXProperty().addListener(cmboBoxStatusStart.setItems());
+*/
+
+    this.cmboBoxStatusStart.setItems(this.orderModel.getLabFxObservableList());
+   cmboBoxStatusStart.getSelectionModel().select(1);
+    this.orderModel.getOrderFxObjectProperty().statusFxProperty().bind(this.cmboBoxStatusStart.valueProperty());
+
+
+    this.cmbWetProduct.setItems (this.orderModel.getGoodsPropertyObservableList());
+    this.orderModel.getOrderFxObjectProperty().goodsPropertyProperty().bind(this.cmbWetProduct.valueProperty());
+
+
+    DateTimeFormatter formatterr = DateTimeFormatter.ISO_DATE_TIME;
+    this.create_date.textProperty().bindBidirectional(this.orderModel.getOrderFxObjectProperty().create_dateProperty(), new
+            //LocalDateStringConverter(formatterr,formatterr));
+            LocalDateTimeStringConverter());
+
+    this.commissionDate.valueProperty().bindBidirectional(this.orderModel.getOrderFxObjectProperty()
+            .commissionDateProperty());
+
+    this.wetOrderPacket.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( ).packProperty ( ), new
+            NumberStringConverter ( ));
+    this.wetOrderedQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
+            .order_quantityProperty ( ), new NumberStringConverter ( ));
+
+    // Podczas składania zamówienia nie wiadomo ile będzie zrealizowane
+    // this.wedMadeQuantity.textProperty ( ).bindBidirectional (this.orderModel.getOrderFxObjectProperty ( )
+    //      .order_realizeProperty ( ), new NumberStringConverter ( ));
+
+    this.orderModel.getOrderFxObjectProperty ( ).commentProperty ( ).bind (this.wetOrderComment.textProperty ( ));
+    this.orderModel.getOrderFxObjectProperty ( ).compInfoProperty ( ).bind (this.wetOrderedCompInfo.textProperty ( ));
+    //this.orderModel.getOrderFxObjectProperty().statusFxProperty().bind()(this.tfDefaultValueLab.textProperty());
+
+}
+
+    @FXML
+    public void showDates() {
+    if (date1.valueProperty () != null || date2.valueProperty () != null) {
+        reportModel.showDates ( );
     }
+    else
+    { DialogsUtils.dialogWarningDPApplication();
+    }
+    }
+
+    public void clearDateFilter() {
+    date1.getEditor ().clear ();
+    date1.setValue(null);
+    date2.getEditor ().clear ();
+    date2.setValue(null);
+    loadTable ();
+}
 
     public void loadTable(){
         this.reportModel = new ReportModel ( );
+        this.reportModel.wetReportController = this;
         try {
             this.reportModel.initnew ( );
         } catch (ApplicationException e) {
@@ -629,15 +775,24 @@ public class WetReportController implements BaseModel {
         this.colCOMMENT.setCellValueFactory (param -> param.getValue ( ).commentProperty ( ));
         this.colIDUSERFOREIGNCreate.setCellValueFactory (cellData ->cellData.getValue ().userFxCreateProperty ());
         this.colIDUSERFOREIGNEdit.setCellValueFactory (cellData->cellData.getValue ().userFxEditProperty ());
-        this.colCREATE_DATE_REPORT.setCellValueFactory (cellData -> cellData.getValue ( ).create_dateProperty ( ));
-        this.colEDITION_DATE_REPORT.setCellValueFactory (cellData -> cellData.getValue ( ).edit_dateProperty ( ));
+        //Date
+        this.colDateCommission.setCellValueFactory(cellData->cellData.getValue().commissionDateProperty());
+        this.colCREATE_DATE_REPORT.setCellValueFactory (cellData -> cellData.getValue ().create_dateProperty ());
+        this.colEDITION_DATE_REPORT.setCellValueFactory (cellData -> cellData.getValue ().edit_dateProperty ());
+
         this.colWETPRODUCTLABCOMMENT.setCellValueFactory (cellData -> cellData.getValue ( ).labcommentProperty ( ));
         this.colWET_PRODUCT_EDIT.setCellValueFactory (cellData->new SimpleObjectProperty<> (cellData.getValue ()));
+        //Warehouseman
+        this.colWarehouseman.setCellValueFactory(cellData-> new SimpleObjectProperty<>(cellData.getValue()));
+        this.colIDWarehouseman.setCellValueFactory(cellData->cellData.getValue().userFXWhmProperty());
+        this.colWhmAmount.setCellValueFactory(cellData->cellData.getValue().amountProperty().asObject());
+        this.colWhmStatus.setCellValueFactory(cellData->cellData.getValue().whmStatusProperty());
+        this.colWhmComment.setCellValueFactory(cellData->cellData.getValue().whmCommentProperty());
+        //Laboratory
         this.colWETPRODUCTLABEDIT.setCellValueFactory (cellData -> new SimpleObjectProperty<> (cellData.getValue ( )));
         this.colWETPRODUCT_DELETE.setCellValueFactory (cellData -> new SimpleObjectProperty<> (cellData.getValue ( )));
         this.colLAB_STATUS.setCellValueFactory(cellData->cellData.getValue().statusFxProperty());
-
-
+        this.colUserLab.setCellValueFactory (cellData->cellData.getValue ().userFxLabProperty ());
 
     }
 
@@ -826,6 +981,101 @@ public class WetReportController implements BaseModel {
     }
 
 
+    // Funkcja która ustawia status laboratorium na "nie podlega kontroli" lub "-" w zależności od wybranego produktu
+    // przy składaniu zamówienia.
+    @FXML
+    void onActLabStatus(ActionEvent event) {
+        valueStatus = cmbWetProduct.getSelectionModel().getSelectedItem().toString();
+        System.out.println(valueStatus);
+
+
+        if ( "EKOR 64".equals(valueStatus) || "BAZA EKOR 81".equals(valueStatus) || "ANTOL FLEX 2K KOMP. B"
+                .equals(valueStatus)) {
+           // System.out.println("OK");
+            cmboBoxStatusStart.getSelectionModel().select(1); // -
+            this.orderModel.getOrderFxObjectProperty().statusFxProperty().bind(this.cmboBoxStatusStart.valueProperty());
+        } else {
+           // System.out.println("NO");
+            cmboBoxStatusStart.getSelectionModel().select(4); // NIE PODLEGA KONTROLI
+            this.orderModel.getOrderFxObjectProperty().statusFxProperty().bind(this.cmboBoxStatusStart.valueProperty());
+        }
+
+
+    }
+
+
+
+    @FXML
+    public void print() {
+        PrintCsv printCsv = new PrintCsv();
+        try {
+            printCsv.printToCsv(new ArrayList<>(this.reportModel.getFilteredData()));
+        } catch (IOException e) {
+            showWarning();
+            System.out.println("LOG: Problem z zapisem");
+        }
+    }
+
+    private void showWarning() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Problem z exportem pliku");
+        alert.setHeaderText("Plik nie został zapisany");
+        alert.setContentText("Wystąpił problem z eksportem tabelki do pliku. Sprawdź czy plik nie jest otwarty.");
+        alert.showAndWait();
+    }
+
+
+    public void onActCheckBoxSelected(ActionEvent actionEvent) {
+        if( checkBox_today.isSelected()){
+            checkBox_today_commission.setSelected(false);
+            tableViewWetReport.setItems(reportModel.filteredData);
+        }
+        else if(checkBox_today_commission.isSelected()){
+            checkBox_today.setSelected(false);
+         //   tableViewWetReport.setItems(reportModel.filteredDataCommission);
+        }
+        else {
+            tableViewWetReport.setItems(reportModel.getOrderFxObservableList());
+        }
+    }
+
+    public void onActCheckBoxSelected2(ActionEvent actionEvent) {
+
+        if(checkBox_today_commission.isSelected()){
+            checkBox_today.setSelected(false);
+            tableViewWetReport.setItems(reportModel.filteredData);
+        }
+        else {
+            tableViewWetReport.setItems(reportModel.getOrderFxObservableList());
+        }
+    }
+
+
+    public void check() {
+        this.checkBox_today.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                reportModel.getFilteredData().setPredicate (person -> reportModel.isDayToday(person));
+                this.tableViewWetReport.setItems (reportModel.getFilteredData());
+            } else {
+                this.tableViewWetReport.setItems (reportModel.getOrderFxObservableList());
+            }
+        });
+    }
+
+    public void check2() {
+        this.checkBox_today_commission.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                reportModel.getFilteredData().setPredicate (p -> reportModel.isDayTodayCommission(p));
+                this.tableViewWetReport.setItems (reportModel.getFilteredDataCommission());
+            } else {
+                this.tableViewWetReport.setItems (reportModel.getOrderFxObservableList());
+            }
+        });
+    }
+
+
+
+
     //wczytywanie lab.fxml
     public void OnSelectionChangedTab3(Event event) {
         setCenterLab ("/fxml/lab.fxml");
@@ -884,6 +1134,7 @@ public class WetReportController implements BaseModel {
     public void setUserFxObservableList(ObservableList<UserFx> userFxObservableList) {
         this.userFxObservableList = userFxObservableList;
     }
+
 
 }
 

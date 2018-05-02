@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import torggler.ApplicationException;
 import torggler.DbManager;
+import torggler.DialogsUtils;
 import torggler.UserSingleton;
 import torggler.controllers.WetReportController;
 import torggler.dao.*;
@@ -28,7 +29,7 @@ import java.util.List;
 
 public class OrderModel {
 
-    public static final String URL = "jdbc:postgresql://127.0.0.1:5432/dbTorggler";
+    public static final String URL = "jdbc:postgresql://localhost:5432/dbTorggler";
     private static final String USER = "postgres";
     private static final String PASSWORD = "dagdam";
 
@@ -101,7 +102,6 @@ public void initTable() throws ApplicationException {
         this.baseFxObservableList.clear ();
         List<TabWetBase> bases = baseDao.queryForAll(TabWetBase.class);
         bases.forEach(c -> {
-
             BaseFx baseFx1 = ConverterBase.convertToBaseFx  (c);
             baseFxObservableList.add (baseFx1);
 
@@ -188,9 +188,19 @@ public void initTable() throws ApplicationException {
             TabUsers tabUsers = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFxCreate().getId());
             tabWetReport.setTabUsersForegin(tabUsers);
 
-            TabUsers tabUsers2 = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFxEdit ()
-                    .getId());
+            TabUsers tabUsers2 = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFxEdit ().getId());
             tabWetReport.setTabUsersEditForegin (tabUsers2);
+
+            TabUsers tabLabUser = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFxLab().getId());
+            tabWetReport.setTabUsersLabForegin (tabLabUser);
+
+            TabUsers tabWhmUsers = userDao.findById(TabUsers.class, this.getOrderFxObjectProperty().getUserFXWhm()
+                    .getId());
+            tabWetReport.setTabUFWarehouseman(tabWhmUsers);
+
+            Date date =  ConverterDate.convertToDate(this.orderFxObjectProperty.get().getCommissionDate()
+                    .atStartOfDay());
+            tabWetReport.setCommissionDateReport(date);
 
             tabWetReport.setCompInfo (this.orderFxObjectProperty.get ().getCompInfo ());
             tabWetReport.setPack (this.orderFxObjectProperty.get ( ).getPack ( ));
@@ -208,6 +218,8 @@ public void initTable() throws ApplicationException {
         } catch (SQLException e) {
             e.printStackTrace ( );
         }
+
+        DialogsUtils.dialogSaveApplication();
 
     }
 

@@ -35,7 +35,7 @@ import java.util.List;
 
 public class WetBaseController implements BaseModel {
 
-    public static final String URL = "jdbc:postgresql://127.0.0.1:5432/dbTorggler";
+    public static final String URL = "jdbc:postgresql://localhost:5432/dbTorggler";
     private static final String USER = "postgres";
     private static final String PASSWORD = "dagdam";
     public ComboBox cmbBoxWetProductBase;

@@ -20,6 +20,10 @@ public class TabWetReport implements BaseModel {
     //date
     @DatabaseField(columnName = "CREATE_DATE_REPORT")  // wycięte ,mdataType = DataType.LONG_STRING
     private Date createDateReport;
+
+    //commissionDate
+    @DatabaseField(columnName = "COMMISSION_DATE")
+    private Date commissionDateReport;
 /*
     @DatabaseField(columnName = "TIME")
     private Timer createTimeReport;
@@ -58,7 +62,7 @@ public class TabWetReport implements BaseModel {
 
     //---
     @DatabaseField(columnName = "PACK")
-    private int pack;
+    private double pack;
 
     @DatabaseField(columnName = "ORDER_QUANITY")
     private double order_quantity;
@@ -69,23 +73,34 @@ public class TabWetReport implements BaseModel {
     @DatabaseField(columnName = "COMMENT")
     private String comment;
 
+    //Warehouseman
+    @DatabaseField(columnName = "idUFWarehouseman", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true,
+            canBeNull = true)
+    private TabUsers tabUFWarehouseman;
 
-//lab part
+    @DatabaseField(columnName = "AMOUNT")
+    private double amount;
 
+    @DatabaseField(columnName = "STATUS_WHM")
+    private String statusWhm;
+
+    @DatabaseField(columnName = "COMMENTWHM")
+    private String commentWhm;
+
+    //lab part
     @DatabaseField(columnName = "idStatusForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true,
             canBeNull = true)
     private Status statusLabForegin;
-/*
-    @DatabaseField(columnName = "idUserForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true,
+
+    @DatabaseField(columnName = "idUserLabForeign", foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true,
             canBeNull = false)
     private TabUsers tabUsersLabForegin;
-*/
+
     @DatabaseField(columnName = "LAB_COMMENT")
     private String labComment;
 
 
     //Get&Set
-
 
     public int getIdWetReport() {
         return idWetReport;
@@ -103,6 +118,14 @@ public class TabWetReport implements BaseModel {
         this.createDateReport = createDateReport;
     }
 
+    public Date getCommissionDateReport() {
+        return commissionDateReport;
+    }
+
+    public void setCommissionDateReport(Date commissionDateReport) {
+        this.commissionDateReport = commissionDateReport;
+    }
+
     public Date getEditionDateReport() {
         return editionDateReport;
     }
@@ -117,6 +140,14 @@ public class TabWetReport implements BaseModel {
 
     public void setTabWetProductForeign(TabWetProduct tabWetProductForeign) {
         this.tabWetProductForeign = tabWetProductForeign;
+    }
+
+    public TabWetGoods getTabWetGoodsForegin() {
+        return tabWetGoodsForegin;
+    }
+
+    public void setTabWetGoodsForegin(TabWetGoods tabWetGoodsForegin) {
+        this.tabWetGoodsForegin = tabWetGoodsForegin;
     }
 
     public String getCompInfo() {
@@ -143,11 +174,19 @@ public class TabWetReport implements BaseModel {
         this.tabUsersForegin = tabUsersForegin;
     }
 
-    public int getPack() {
+    public TabUsers getTabUsersEditForegin() {
+        return tabUsersEditForegin;
+    }
+
+    public void setTabUsersEditForegin(TabUsers tabUsersEditForegin) {
+        this.tabUsersEditForegin = tabUsersEditForegin;
+    }
+
+    public double getPack() {
         return pack;
     }
 
-    public void setPack(int pack) {
+    public void setPack(double pack) {
         this.pack = pack;
     }
 
@@ -175,6 +214,38 @@ public class TabWetReport implements BaseModel {
         this.comment = comment;
     }
 
+    public TabUsers getTabUFWarehouseman() {
+        return tabUFWarehouseman;
+    }
+
+    public void setTabUFWarehouseman(TabUsers tabUFWarehouseman) {
+        this.tabUFWarehouseman = tabUFWarehouseman;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getStatusWhm() {
+        return statusWhm;
+    }
+
+    public void setStatusWhm(String statusWhm) {
+        this.statusWhm = statusWhm;
+    }
+
+    public String getCommentWhm() {
+        return commentWhm;
+    }
+
+    public void setCommentWhm(String commentWhm) {
+        this.commentWhm = commentWhm;
+    }
+
     public Status getStatusLabForegin() {
         return statusLabForegin;
     }
@@ -183,27 +254,19 @@ public class TabWetReport implements BaseModel {
         this.statusLabForegin = statusLabForegin;
     }
 
+    public TabUsers getTabUsersLabForegin() {
+        return tabUsersLabForegin;
+    }
+
+    public void setTabUsersLabForegin(TabUsers tabUsersLabForegin) {
+        this.tabUsersLabForegin = tabUsersLabForegin;
+    }
+
     public String getLabComment() {
         return labComment;
     }
 
     public void setLabComment(String labComment) {
         this.labComment = labComment;
-    }
-
-    public TabWetGoods getTabWetGoodsForegin() {
-        return tabWetGoodsForegin;
-    }
-
-    public void setTabWetGoodsForegin(TabWetGoods tabWetGoodsForegin) {
-        this.tabWetGoodsForegin = tabWetGoodsForegin;
-    }
-
-    public TabUsers getTabUsersEditForegin() {
-        return tabUsersEditForegin;
-    }
-
-    public void setTabUsersEditForegin(TabUsers tabUsersEditForegin) {
-        this.tabUsersEditForegin = tabUsersEditForegin;
     }
 }

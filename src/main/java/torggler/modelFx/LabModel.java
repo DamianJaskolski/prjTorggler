@@ -1,19 +1,16 @@
 package torggler.modelFx;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import torggler.ApplicationException;
-import torggler.dao.BaseDao;
-import torggler.dao.GoodsDao;
-import torggler.dao.ReportDao;
-import torggler.dao.StatusDao;
-import torggler.tables.Status;
-import torggler.tables.TabWetBase;
-import torggler.tables.TabWetGoods;
-import torggler.tables.TabWetReport;
+import torggler.UserSingleton;
+import torggler.dao.*;
+import torggler.tables.*;
 import torggler.utils.converters.ConverterBase;
 import torggler.utils.converters.ConverterGoods;
 import torggler.utils.converters.ConverterReport;
@@ -73,8 +70,6 @@ public void initStatusList() throws ApplicationException {
 
     public void saveLabInDataBase() throws ApplicationException {
 
-
-
         TabWetReport tabWetReport = ConverterReport.convertToOrder (this.getLabFxObjectProperty ());
 
         BaseDao baseDao = new BaseDao();
@@ -89,6 +84,41 @@ public void initStatusList() throws ApplicationException {
         TabWetGoods tabWetGoods = goodsDao.findById (TabWetGoods.class, this.getLabFxObjectProperty ()
                 .getGoodsProperty ().getIdWetGoodsProperty ());
         tabWetReport.setTabWetGoodsForegin (tabWetGoods);
+
+        UserSingleton us = UserSingleton.getInstance();
+        IntegerProperty intProperty = new SimpleIntegerProperty (us.id);
+
+        UserFx userFx = new UserFx ();
+        userFx.setId (us.id);
+        userFx.setLogin(us.log_in);
+        userFx.setName(us.name);
+        userFx.setSurname(us.surname);
+        userFx.setPassword(us.password);
+        userFx.setDepartment(us.department_lg);
+
+
+        getLabFxObjectProperty ().getUserFxLab().idProperty ().bind(intProperty);
+
+        //  tabWetReport.setTabUsersEditForegin (this.EditOrderFxObjectProperty.get ().getUserFxEdit ());
+
+        UserDao userDao = new UserDao();
+        TabUsers tabUsers = userDao.findById (TabUsers.class, this.getLabFxObjectProperty().getUserFxEdit ().getId());
+        tabWetReport.setTabUsersEditForegin (tabUsers);
+
+
+        TabUsers tabUsers2 = userDao.findById (TabUsers.class, this.getLabFxObjectProperty().getUserFxCreate ().getId());
+        tabWetReport.setTabUsersForegin (tabUsers2);
+
+        TabUsers tabLabUser = userDao.findById(TabUsers.class, this.getLabFxObjectProperty ().getUserFxLab().getId());
+        tabWetReport.setTabUsersLabForegin (tabLabUser);
+
+
+        TabUsers tabWhmUsers = userDao.findById(TabUsers.class, this.getLabFxObjectProperty().getUserFXWhm()
+                .getId());
+        tabWetReport.setTabUFWarehouseman(tabWhmUsers);
+
+        tabWetReport.setEditionDateReport (tabWetReport.getEditionDateReport ());  // żeby nie modyfikować bazy
+
 
         ReportDao reportDao = new ReportDao ();
         reportDao.creatOrUpdate (tabWetReport);

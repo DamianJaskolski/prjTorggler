@@ -93,10 +93,9 @@ public class WetReportEditController {
         wetReportEditModel.getEditOrderFxObjectProperty ().edit_dateProperty ().set (LocalDateTime.now ());
 
 
-        //Produkt a jak do labelki
-
-        //this.wetReportEditModel.getEditOrderFxObjectProperty ().goodsPropertyProperty().bind(this.labelEditProduct
-          //      .textProperty ());
+        //Produkt
+        labelEditProduct.textProperty ().bind (this.wetReportEditModel.getEditOrderFxObjectProperty ().goodsPropertyProperty ()
+                .getValue ().nameWetGoodsPropertyProperty ());
 
         //Informacja uzupełniająca
         this.textAreaEditExtendedInfo.textProperty ().bindBidirectional (this.wetReportEditModel

@@ -62,8 +62,12 @@ public class DataCreator {
         tabWetReport.setOrder_realize(75);
         tabWetReport.setComment("To jest komentarz do zamówienia lub realizacji");
         tabWetReport.setLabComment ("Zgodny");
-      //  tabWetReport.setTabUsersLabForegin (tabUsers ());
+        tabWetReport.setTabUsersLabForegin (tabUsers ());
         tabWetReport.setStatusLabForegin(status());
+        tabWetReport.setTabUFWarehouseman(tabUsers());
+        tabWetReport.setAmount(0);
+        tabWetReport.setStatusWhm("przyjęte");
+        tabWetReport.setComment("To jest komentarz magazyniera");
         return tabWetReport;
     }
 }

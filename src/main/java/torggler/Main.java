@@ -9,6 +9,7 @@ import com.j256.ormlite.table.TableUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import torggler.tables.*;
@@ -21,7 +22,7 @@ public class Main extends Application {
     public static final String MAIN_MENU_FXML = "/fxml/main.fxml";
     public static final String MAIN_LOGIN_FXML = "/fxml/login.fxml";
 
-    public static final String URL = "jdbc:postgresql://127.0.0.1:5432/dbTorggler";
+    public static final String URL = "jdbc:postgresql://localhost:5432/dbTorggler";
     private static final String USER = "postgres";
     private static final String PASSWORD = "dagdam";
 
@@ -75,18 +76,17 @@ public class Main extends Application {
     Dao<TabWetGoods, Integer> tabWetGoodsIntegerDao = DaoManager.createDao(connectionSource,TabWetGoods.class);
     TabWetGoods tabWetGoods = DataCreator.tabWetGoods();
     tabWetGoodsIntegerDao.createOrUpdate(tabWetGoods);
-    connectionSource.close();
-*/
+  */
 /*
     //Report
-        TableUtils.dropTable(connectionSource, TabWetReport.class, true);
+        //TableUtils.dropTable(connectionSource, TabWetReport.class, true);
         TableUtils.createTable (connectionSource, TabWetReport.class);
         Dao<TabWetReport, Integer> tabWetReportIntegerDao = DaoManager.createDao(connectionSource, TabWetReport.class);
         TabWetReport tabWetReport = DataCreator.tabWetReport();
         tabWetReportIntegerDao.createOrUpdate(tabWetReport);
         connectionSource.close();
-
 */
+
 /*
         //Status
         TableUtils.dropTable(connectionSource,Status.class,true);
@@ -100,7 +100,8 @@ public class Main extends Application {
         //Load main stage
         BorderPane mainborderPane = FXMLLoader.load(getClass().getResource(MAIN_MENU_FXML));
        // BorderPane mainborderPane = FXMLLoader.load(getClass().getResource(MAIN_LOGIN_FXML));
-
+        primaryStage.getIcons().add(new Image ("/img/logoSmall.png"));
+        primaryStage.setTitle ("ISO Torggler");
         primaryStage.setScene(new Scene(mainborderPane));
         primaryStage.show();
 

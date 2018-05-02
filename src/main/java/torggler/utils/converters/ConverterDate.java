@@ -1,5 +1,6 @@
 package torggler.utils.converters;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -17,6 +18,10 @@ public class ConverterDate {
         /*
         LocalDate date = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     */
+    }
+
+    public static LocalDate asLocalDate(Date date) {
+        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
  /*   public static LocalDateTime convertToLocaDateTime(LocalDateTime localDateTime){

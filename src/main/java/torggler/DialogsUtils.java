@@ -17,11 +17,44 @@ public class DialogsUtils {
 
     private static final ResourceBundle bundle = FxmlUtils.getResourceBundle();
 
+
+    public static void dialogWarningDPApplication() {
+        Alert informationAlert = new Alert(Alert.AlertType.WARNING);
+        informationAlert.setTitle(bundle.getString("warningDP.title"));
+        informationAlert.setHeaderText(bundle.getString("warningDP.header"));
+        informationAlert.setContentText(bundle.getString("warningDP.content"));
+        informationAlert.showAndWait();
+    }
+
+    public static void dialogSaveApplication() {
+        Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
+        informationAlert.setTitle(bundle.getString("save.title"));
+        informationAlert.setHeaderText(bundle.getString("save.header"));
+        informationAlert.setContentText(bundle.getString("save.content"));
+        informationAlert.showAndWait();
+    }
+
+    public static void dialogExportCSVApplication() {
+        Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
+        informationAlert.setTitle(bundle.getString("exportCsv.title"));
+        informationAlert.setHeaderText(bundle.getString("exportCsv.header"));
+        informationAlert.setContentText(bundle.getString("exportCsv.content"));
+        informationAlert.showAndWait();
+    }
+
     public static void dialogAboutApplication() {
         Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
         informationAlert.setTitle(bundle.getString("about.title"));
         informationAlert.setHeaderText(bundle.getString("about.header"));
         informationAlert.setContentText(bundle.getString("about.content"));
+        informationAlert.showAndWait();
+    }
+
+    public static void infoApplication() {
+        Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
+        informationAlert.setTitle(bundle.getString("info.title"));
+        informationAlert.setHeaderText(bundle.getString("info.header"));
+        informationAlert.setContentText(bundle.getString("info.content"));
         informationAlert.showAndWait();
     }
 

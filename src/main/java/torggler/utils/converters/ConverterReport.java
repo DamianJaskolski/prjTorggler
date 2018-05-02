@@ -1,6 +1,7 @@
 package torggler.utils.converters;
 
 
+import javafx.util.converter.LocalDateTimeStringConverter;
 import torggler.modelFx.OrderFx;
 import torggler.tables.Status;
 import torggler.tables.TabWetReport;
@@ -26,8 +27,12 @@ public class ConverterReport {
         tabWetReport.setComment(orderFx.getComment ());
         tabWetReport.setCreateDateReport (ConverterDate.convertToDate (orderFx.getCreate_date ()));
         tabWetReport.setEditionDateReport (ConverterDate.convertToDate (orderFx.getEdit_date ()));
+        tabWetReport.setCommissionDateReport(ConverterDate.convertToDate(orderFx.getCommissionDate().atStartOfDay()));
       // tabWetReport.setCreateDateReport (Utils.convertToDate(orderFx.getEdit_date ()));
         tabWetReport.setLabComment (orderFx.getLabcomment ());
+        tabWetReport.setStatusWhm (orderFx.getWhmStatus ());
+        tabWetReport.setAmount (orderFx.getAmount ());
+        tabWetReport.setCommentWhm(orderFx.getWhmComment());
         return tabWetReport;
     }
 
@@ -53,23 +58,28 @@ public class ConverterReport {
      //  orderFx.setProductFx (ConverterProduct.converterToProductFX (tabWetReport.getTabWetProductForeign ()));
        orderFx.setGoodsProperty(ConverterGoods.convertToGoodsProperty(tabWetReport.getTabWetGoodsForegin()));
        orderFx.setBaseFx(ConverterBase.convertToBaseFx(tabWetReport.getTabWetBaseForegin()));
-       orderFx.setPack (tabWetReport.getPack ());
+       orderFx.setPack (tabWetReport.getPack());
        orderFx.setCompInfo (tabWetReport.getCompInfo ());
        orderFx.setOrder_quantity (tabWetReport.getOrder_quantity ());
        orderFx.setOrder_realize (tabWetReport.getOrder_realize ());
        orderFx.setComment (tabWetReport.getComment ());
+
        orderFx.setUserFxCreate (ConverterUser.convertToUserFx (tabWetReport.getTabUsersForegin ()));
        orderFx.setUserFxEdit (ConverterUser.convertToUserFx (tabWetReport.getTabUsersEditForegin ()));
-      // orderFx.setCreate_date (ConverterDate.convertToLocalDate (tabWetReport.getCreateDateReport ())) ;
+       orderFx.setUserFxLab  (ConverterUser.convertToUserFx (tabWetReport.getTabUsersLabForegin ()));
+       orderFx.setUserFXWhm(ConverterUser.convertToUserFx(tabWetReport.getTabUFWarehouseman()));
+
+       orderFx.setWhmStatus(tabWetReport.getStatusWhm());
+       orderFx.setAmount(tabWetReport.getAmount());
+       orderFx.setWhmComment(tabWetReport.getCommentWhm());
+
        orderFx.setLabcomment (tabWetReport.getLabComment ());
        orderFx.setStatusFx((ConverterStatus.convertToLabFX(tabWetReport.getStatusLabForegin())));
        orderFx.setCreate_date (ConverterDate.convertToLocalDate (tabWetReport.getCreateDateReport ()));
-       orderFx.setEdit_date  (ConverterDate.convertToLocalDate (tabWetReport.getEditionDateReport ()));
-       //user
-       //orderFx.setCreate_date (ConverterDate.convertToLocalDate (tabWetReport.getEditionDateReport ()));
-        //user
+       orderFx.setCommissionDate(ConverterDate.asLocalDate(tabWetReport.getCommissionDateReport()));
+       orderFx.setEdit_date (ConverterDate.convertToLocalDate (tabWetReport.getEditionDateReport ()));
        return orderFx;
-    }
+   }
 
 
 

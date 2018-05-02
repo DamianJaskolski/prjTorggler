@@ -75,17 +75,16 @@ public class WetReportEdit2Controller {
 
         wetReportEdit2Model.getEdit2OrderFxObjectProperty ().edit_dateProperty ().set (LocalDateTime.now ());
 
-        //Produkt a jak do labelki
-
-        //this.wetReportEditModel.getEditOrderFxObjectProperty ().goodsPropertyProperty().bind(this.labelEditProduct
-          //      .textProperty ());
+        //Produkt
+        labelEditProduct.textProperty ().bind (this.wetReportEdit2Model.getEdit2OrderFxObjectProperty ().goodsPropertyProperty ()
+                .getValue ().nameWetGoodsPropertyProperty ());
 
         //Informacja uzupełniająca
         this.textAreaEditExtendedInfo.textProperty ().bindBidirectional (this.wetReportEdit2Model
                 .getEdit2OrderFxObjectProperty ().compInfoProperty ());
 
         //Użyta baza
-      this.comboBoxEditBase.setItems((this.wetReportEdit2Model.getBaseFxObservableList()));
+       this.comboBoxEditBase.setItems((this.wetReportEdit2Model.getBaseFxObservableList()));
        this.comboBoxEditBase.valueProperty().bindBidirectional(this.wetReportEdit2Model.getEdit2OrderFxObjectProperty
                ().baseFxProperty());
 
@@ -109,8 +108,6 @@ public class WetReportEdit2Controller {
 
     @FXML
     void onActionSaveChanges(ActionEvent event) {
-
-
 
         try {
             this.wetReportEdit2Model.saveChangesInDataBase ();

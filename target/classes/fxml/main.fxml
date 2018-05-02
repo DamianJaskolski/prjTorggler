@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="mainBorderPane" prefHeight="1000.0" prefWidth="1900.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="torggler.controllers.MainController">
+<BorderPane fx:id="mainBorderPane" prefHeight="768.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="torggler.controllers.MainController">
    <left>
       <TreeView fx:id="mainTreeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#mainOnMouseClickedTreeView" BorderPane.alignment="CENTER" />
    </left>
@@ -16,8 +16,10 @@
    <bottom>
       <HBox prefHeight="25.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="tf_info" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" promptText="Użytkownik nie zalogowany." HBox.hgrow="ALWAYS" />
-            <TextField fx:id="tf_info1" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" promptText="Ostatnia modyfikacja: 20180217 18:40" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="tf_info" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" promptText="Użytkownik nie zalogowany." HBox.hgrow="ALWAYS" />
+            <TextField fx:id="tf_infoNameSurname" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="420.0" promptText="Imię Nazwisko: -" />
+            <TextField fx:id="tf_infoDepartment" prefHeight="25.0" prefWidth="450.0" promptText="Dział: -" />
+            <TextField fx:id="tf_info1" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" prefHeight="25.0" prefWidth="413.0" promptText="Ostatnia modyfikacja: 2018-03-04 23:15" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
    </bottom>

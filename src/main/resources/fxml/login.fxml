@@ -24,8 +24,9 @@
           <RowConstraints maxHeight="205.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="205.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="134.0" minHeight="0.0" prefHeight="14.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="71.0" minHeight="7.0" prefHeight="18.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="71.0" minHeight="7.0" prefHeight="22.4000244140625" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="71.0" minHeight="7.0" prefHeight="57.5999755859375" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="62.0" minHeight="0.0" prefHeight="18.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="12.0" vgrow="SOMETIMES" />
         </rowConstraints>
@@ -37,30 +38,30 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </TextField>
-            <Label text="Status:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+            <Label text="Status:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets right="80.0" />
                </GridPane.margin></Label>
-            <Label fx:id="lab_statuslogin" text="nie zalogowany" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+            <Label fx:id="lab_statuslogin" text="nie zalogowany" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets left="50.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Baza:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+            <Label text="Baza:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets right="70.0" />
                </GridPane.margin></Label>
-            <Label fx:id="lab_status_conn" text="brak informacji" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+            <Label fx:id="lab_status_conn" text="brak informacji" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets left="47.0" />
                </GridPane.margin>
             </Label>
-            <PasswordField fx:id="tf_password" prefHeight="25.0" prefWidth="428.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <PasswordField fx:id="tf_password" onKeyPressed="#enter" prefHeight="25.0" prefWidth="428.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
             </PasswordField>
-            <ToggleButton fx:id="btn_login" mnemonicParsing="false" onAction="#actLogin" text="Zaloguj" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <ToggleButton fx:id="btn_login" mnemonicParsing="false" onAction="#actLogin" onKeyPressed="#enter" prefHeight="48.0" prefWidth="113.0" text="Zaloguj" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>

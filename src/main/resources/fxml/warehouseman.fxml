@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="620.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="torggler.controllers.WarehousemanController">
+   <children>
+      <GridPane layoutX="78.0" layoutY="27.0" prefHeight="475.0" prefWidth="502.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="197.0" minWidth="10.0" prefWidth="197.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="10.0" prefWidth="195.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="46.9999755859375" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="46.9999755859375" minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="46.9999755859375" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="85.00000610351563" minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="85.00000610351563" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="85.00000610351563" minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="164.19998779296878" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="0.0" prefHeight="15.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="2.1999694824218636" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="3.4000076293945654" prefHeight="15.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="10.0" prefHeight="78.99998779296874" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.19998779296878" minHeight="5.999975585937477" prefHeight="5.999975585937477" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Magazynier:">
+               <GridPane.margin>
+                  <Insets right="25.0" />
+               </GridPane.margin></Label>
+            <Label text="Produkt:" GridPane.rowIndex="4">
+               <padding>
+                  <Insets right="25.0" />
+               </padding></Label>
+            <Label text="Ilość zlecona:" GridPane.rowIndex="6">
+               <padding>
+                  <Insets right="25.0" />
+               </padding></Label>
+            <Label text="Ilość wykonana:" GridPane.rowIndex="8">
+               <padding>
+                  <Insets right="25.0" />
+               </padding></Label>
+            <Label text="Ilość przekazana na magazyn:" GridPane.rowIndex="10">
+               <padding>
+                  <Insets right="25.0" />
+               </padding></Label>
+            <TextField fx:id="txtFldAmount" maxWidth="-Infinity" prefHeight="26.0" prefWidth="147.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <Label text="Status:" GridPane.rowIndex="12">
+               <padding>
+                  <Insets right="25.0" />
+               </padding></Label>
+            <ComboBox fx:id="cmbStatus" onAction="#cmbo" prefWidth="150.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="12">
+               <GridPane.margin>
+                  <Insets left="150.0" />
+               </GridPane.margin></ComboBox>
+            <Label fx:id="lblAmountRealize" text="0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="lblAmountQuanity" text="-" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label fx:id="lblProduct" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="lblWarehouseman" text="-" GridPane.columnIndex="1" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="1" />
+            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="5" />
+            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="7" />
+            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="9" />
+            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="11" />
+            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="13" />
+            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+            <TextArea fx:id="txtAComment" prefHeight="89.0" prefWidth="366.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+            <Label text="Komentarz:" GridPane.rowIndex="14">
+               <padding>
+                  <Insets right="25.0" />
+               </padding>
+            </Label>
+            <Separator prefWidth="200.0" GridPane.rowIndex="3" />
+            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Data zlecenia zamówienia:" GridPane.rowIndex="2">
+               <padding>
+                  <Insets right="25.0" />
+               </padding>
+            </Label>
+            <Label fx:id="lblData" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="lblStatus" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="12">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+         </children>
+      </GridPane>
+      <ToggleButton fx:id="btnSaveChanges" contentDisplay="CENTER" layoutX="240.0" layoutY="540.0" mnemonicParsing="false" onAction="#onActSave" prefHeight="38.0" prefWidth="89.0" text="Zapisz" />
+      <ToggleButton fx:id="btnCancel" contentDisplay="CENTER" layoutX="348.0" layoutY="547.0" mnemonicParsing="false" onAction="#onActCancel" prefHeight="15.0" prefWidth="60.0" text="Anuluj" />
+   </children>
+</AnchorPane>

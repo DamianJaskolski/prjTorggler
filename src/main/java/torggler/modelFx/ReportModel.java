@@ -1,11 +1,15 @@
 package torggler.modelFx;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.AnchorPane;
 import torggler.ApplicationException;
 import torggler.controllers.WetReportController;
 import torggler.dao.BaseDao;
@@ -16,12 +20,11 @@ import torggler.tables.TabUsers;
 import torggler.tables.TabWetBase;
 import torggler.tables.TabWetGoods;
 import torggler.tables.TabWetReport;
-import torggler.utils.converters.ConverterBase;
-import torggler.utils.converters.ConverterGoods;
-import torggler.utils.converters.ConverterReport;
-import torggler.utils.converters.ConverterUser;
+import torggler.utils.converters.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -29,8 +32,14 @@ import java.util.stream.Collectors;
 
 public class ReportModel {
 
-
+    //filtrowanie daty
     private ObservableList<OrderFx> orderFxObservableList = FXCollections.observableArrayList ();
+
+    public FilteredList<OrderFx> filteredData = new FilteredList<>(orderFxObservableList, person -> true);
+    public FilteredList<OrderFx> filteredDataCommission = new FilteredList<>(orderFxObservableList, p -> true);
+
+
+
     private ObjectProperty<OrderFx> orderFxObjectProperty = new SimpleObjectProperty<> (new OrderFx ( ));
 
 
@@ -48,45 +57,43 @@ public class ReportModel {
     private ObjectProperty<UserFx> userFxObjectProperty = new SimpleObjectProperty<> ();
     //lista przechowuje pełną listę - przytrzymana do odświeżenia
     private List<OrderFx> orderFxList = new ArrayList<> ( );
-    //filtrowanie daty
-    FilteredList<OrderFx> filteredData = new FilteredList<>(orderFxObservableList, person -> true);
+
+   public WetReportController wetReportController;
 
 
-private WetReportController wetReportController;
 
 
-    public void initialize() {
-
-
-        this.wetReportController.checkBox_today.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-
-                filteredData.setPredicate (person -> isDayToday(person));
-                this.wetReportController.tabViewWetReport.setItems (filteredData);
-
-            } else {
-                this.wetReportController.tabViewWetReport.setItems (orderFxObservableList);
-
-            }
-        });
-
-    }
-
-    private boolean isDayToday(OrderFx person) {
+    public boolean isDayToday(OrderFx person) {
         return person.getCreate_date ().toLocalDate().isEqual(LocalDate.now());
     }
 
-    //Ta lista będzie przechowywać CAŁĄ zawartość do przywrócenia po filtrowaniu javafx#48 1400
+    public boolean isDayTodayCommission (OrderFx person){
+        //return p.getCommissionDate().isEqual(LocalDate.now());
+        return person.getCommissionDate().isEqual(LocalDate.now());
+    }
+
+    public void showDates(){
+        filteredData.setPredicate(person -> dateBetween(person));
+        this.wetReportController.tableViewWetReport.setItems(filteredData);
+    }
+
+    public boolean dateBetween(OrderFx person) {
+        LocalDate date1 = this.wetReportController.date1.getValue();
+        LocalDate date2 = this.wetReportController.date2.getValue();
+       // LocalDateTime dataPrzekonwertowana = ConverterDate.convertToLocalDate (person.getCreate_date ());
+        boolean isAfter = person.getCommissionDate().isAfter(date1) || person.getCommissionDate().isEqual (date1);
+
+        boolean isBefore = person.getCommissionDate().isBefore(date2)|| person.getCommissionDate().isEqual(date2);
+        return isAfter && isBefore;
+    }
+
 
     public void initnew() throws ApplicationException {
-
-
 
         ReportDao reportDao = new ReportDao ();
         List<TabWetReport> tabWetReports = reportDao.queryForAll (TabWetReport.class);
         orderFxList.clear ();
         tabWetReports.forEach (dataraport ->{
-            //this.orderFxObservableList.add (ConverterReport.convertToOrderFX (dataraport));
         this.orderFxList.add (ConverterReport.convertToOrderFX (dataraport));
         });
         this.orderFxObservableList.setAll (orderFxList);
@@ -281,6 +288,19 @@ private WetReportController wetReportController;
     public void setUserFxObservableList(ObservableList<UserFx> userFxObservableList) {
         this.userFxObservableList = userFxObservableList;
     }
+
+    public FilteredList<OrderFx> getFilteredData() {
+        return filteredData;
+    }
+
+    public FilteredList<OrderFx> getFilteredDataCommission() {
+        return filteredDataCommission;
+    }
+
+    public void setFilteredDataCommission(FilteredList<OrderFx> filteredDataCommission) {
+        this.filteredDataCommission = filteredDataCommission;
+    }
+
     //END Filter GET & SET---------------------------------------------------------------------------------------------
 
 }

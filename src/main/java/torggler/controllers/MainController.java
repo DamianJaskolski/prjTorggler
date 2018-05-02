@@ -30,6 +30,12 @@ public class MainController implements Initializable {
     public TextField tf_info;
 
     @FXML
+    public TextField tf_infoNameSurname;
+
+    @FXML
+    public TextField tf_infoDepartment;
+
+    @FXML
     public TreeView<String> mainTreeView;
 
     Image folder64x64 = new Image(getClass().getResourceAsStream("/img/folder64x64.png"));

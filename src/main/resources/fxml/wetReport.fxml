@@ -33,51 +33,97 @@
             <content>
               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
                      <children>
-                        <GridPane alignment="TOP_RIGHT" layoutX="23.0" layoutY="28.0" prefHeight="566.0" prefWidth="586.0">
+                        <GridPane alignment="TOP_RIGHT" layoutX="26.0" layoutY="51.0" prefHeight="566.0" prefWidth="802.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.60003662109375" minWidth="10.0" prefWidth="212.0000244140625" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="422.80001220703133" minWidth="10.0" prefWidth="348.79997558593743" />
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="515.0000305175781" minWidth="10.0" prefWidth="166.99999999999997" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="581.3999755859375" minWidth="10.0" prefWidth="567.8" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                              <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                            <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                               <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="115.0" minHeight="10.0" prefHeight="115.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="50.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="78.39999999999998" minHeight="0.0" prefHeight="53.60001220703123" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="Data utworzenia:" />
-                              <Label fx:id="create_date" text="01-01-2018" GridPane.columnIndex="1" />
-                              <Label text="Produkt:" GridPane.rowIndex="3" />
-                              <ComboBox fx:id="cmbWetProduct" prefHeight="26.0" prefWidth="335.0" promptText="brak produktu" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Label text="Baza:" GridPane.rowIndex="5" />
-                              <ComboBox fx:id="cmbBoxBase" prefHeight="26.0" prefWidth="116.0" promptText="brak bazy" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Label text="Opakowanie:" GridPane.rowIndex="6" />
-                              <TextField fx:id="wetOrderPacket" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="100.0" text="25" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Label text="Ilość zamówiona ( kg ):" GridPane.rowIndex="7" />
-                              <TextField fx:id="wetOrderedQuantity" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="100.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Uwagi produkcyjne:" GridPane.rowIndex="8" />
-                              <TextArea fx:id="wetOrderComment" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="355.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                              <ToggleButton fx:id="btnAddWetOrder" mnemonicParsing="false" onAction="#onActAddWetOrder" text="Zapisz zlecenie" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                              <ToggleButton mnemonicParsing="false" text="Anuluj" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                              <Label text="Data i czas utworzenia:" />
+                              <Label fx:id="create_date" text="01-01-2018  00:00:00" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></Label>
+                              <Label text="Produkt:" GridPane.rowIndex="5" />
+                              <ComboBox fx:id="cmbWetProduct" onAction="#onActLabStatus" prefHeight="26.0" prefWidth="335.0" promptText="brak produktu" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></ComboBox>
+                              <Label text="Opakowanie:" GridPane.rowIndex="7" />
+                              <TextField fx:id="wetOrderPacket" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="100.0" text="25" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></TextField>
+                              <Label text="Ilość zamówiona:" GridPane.rowIndex="8" />
+                              <TextField fx:id="wetOrderedQuantity" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="100.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></TextField>
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Uwagi produkcyjne:" GridPane.rowIndex="9" />
+                              <TextArea fx:id="wetOrderComment" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="355.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></TextArea>
+                              <ToggleButton fx:id="btnAddWetOrder" mnemonicParsing="false" onAction="#onActAddWetOrder" prefHeight="46.0" prefWidth="133.0" text="Zapisz zlecenie" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></ToggleButton>
+                              <ToggleButton mnemonicParsing="false" text="Anuluj" GridPane.columnIndex="1" GridPane.rowIndex="12">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></ToggleButton>
                               <Label text="Osoba zlecająca:" GridPane.rowIndex="2" />
-                              <Label fx:id="lblUser" text="Gal Anonim" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label text="Informacja uzupełniająca:" GridPane.rowIndex="4" />
-                              <TextField fx:id="wetOrderedCompInfo" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="335.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <ComboBox id="1" fx:id="cmboBoxStatusStart" disable="true" opacity="0.0" prefWidth="150.0" GridPane.rowIndex="9" />
-                              <Label text="np: 100 lub 100,25" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <Label fx:id="lblUser" text="Gal Anonim" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></Label>
+                              <Label text="Informacja uzupełniająca:" GridPane.rowIndex="6" />
+                              <TextField fx:id="wetOrderedCompInfo" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="335.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin></TextField>
+                              <ComboBox id="1" fx:id="cmboBoxStatusStart" editable="true" opacity="0.0" prefWidth="150.0" visible="false" GridPane.rowIndex="11" />
+                              <Label text="kg  ( przyjmowane wartości 0 i 0,0)" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                  <GridPane.margin>
                                     <Insets bottom="20.0" left="120.0" right="20.0" top="20.0" />
                                  </GridPane.margin>
                               </Label>
                               <Label text="ID zlecjającego:" GridPane.rowIndex="1" />
-                              <Label fx:id="lblUserID" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="lblUserID" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding></Label>
+                              <ComboBox fx:id="cmbBoxBase" prefHeight="26.0" prefWidth="116.0" promptText="brak bazy" visible="false" GridPane.rowIndex="12" />
+                              <Separator prefWidth="200.0" GridPane.rowIndex="3" />
+                              <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Separator prefWidth="200.0" GridPane.rowIndex="10" />
+                              <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                              <Label text="kg  ( przyjmowane wartości 0 i 0,0)" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets left="120.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <DatePicker fx:id="commissionDate" prefHeight="26.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </DatePicker>
+                              <Label text="Zlecenie wykonać w dniu:" GridPane.rowIndex="4" />
                            </children>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -96,21 +142,30 @@
                <content>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>
-                        <SplitPane dividerPositions="0.11314984709480122" layoutX="27.0" layoutY="33.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="508.0" prefWidth="742.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.12" layoutX="27.0" layoutY="33.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" prefHeight="508.0" prefWidth="742.0" scaleShape="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <items>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1277.0">
+                              <AnchorPane maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="1277.0">
                                  <children>
-                                    <HBox prefHeight="0.0" prefWidth="1279.0">
+                                    <HBox prefHeight="0.0" prefWidth="1800.0">
                                        <children>
-                                          <CheckBox fx:id="checkBox_today" mnemonicParsing="false" prefHeight="17.0" prefWidth="153.0" selected="true" text="Tylko dzisiejsza data">
-                                             <HBox.margin>
-                                                <Insets bottom="30.0" left="10.0" top="30.0" />
-                                             </HBox.margin>
-                                          </CheckBox>
+                                          <VBox prefHeight="79.0" prefWidth="158.0">
+                                             <children>
+                                                <CheckBox fx:id="checkBox_today" mnemonicParsing="false" onAction="#onActCheckBoxSelected" prefHeight="17.0" prefWidth="153.0" text="Dzisiaj utworzone">
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" top="5.0" />
+                                                   </VBox.margin>
+                                                </CheckBox>
+                                                <CheckBox fx:id="checkBox_today_commission" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onActCheckBoxSelected2" prefHeight="17.0" prefWidth="153.0" text="Dzisiejsze zlecenie">
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" top="5.0" />
+                                                   </VBox.margin>
+                                                </CheckBox>
+                                             </children>
+                                          </VBox>
                                           <Separator orientation="VERTICAL" prefHeight="300.0" prefWidth="5.0" />
                                           <VBox prefHeight="80.0" prefWidth="67.0">
                                              <children>
-                                                <Label text="Data od:">
+                                                <Label prefHeight="18.0" prefWidth="56.0" text="Data od:">
                                                    <VBox.margin>
                                                       <Insets bottom="10.0" left="10.0" top="11.0" />
                                                    </VBox.margin>
@@ -131,7 +186,7 @@
                                                 </DatePicker>
                                                 <DatePicker fx:id="date2" layoutX="10.0" layoutY="47.0">
                                                    <VBox.margin>
-                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                      <Insets bottom="10.0" left="5.0" right="5.0" top="5.0" />
                                                    </VBox.margin>
                                                 </DatePicker>
                                              </children>
@@ -141,15 +196,20 @@
                                           </VBox>
                                           <VBox prefHeight="80.0" prefWidth="72.0">
                                              <children>
-                                                <ToggleButton mnemonicParsing="false" text="Filtruj">
+                                                <ToggleButton mnemonicParsing="false" onAction="#showDates" prefHeight="26.0" prefWidth="94.0" text="Filtruj">
                                                    <VBox.margin>
                                                       <Insets top="30.0" />
                                                    </VBox.margin>
                                                 </ToggleButton>
                                              </children>
                                           </VBox>
-                                          <Separator orientation="VERTICAL" prefHeight="300.0" prefWidth="15.0" />
-                                          <Label prefHeight="17.0" prefWidth="67.0" text="Produkt:">
+                                          <ToggleButton mnemonicParsing="false" onAction="#clearDateFilter" text="X">
+                                             <HBox.margin>
+                                                <Insets right="10.0" top="30.0" />
+                                             </HBox.margin>
+                                          </ToggleButton>
+                                          <Separator orientation="VERTICAL" prefHeight="77.0" prefWidth="0.0" />
+                                          <Label prefHeight="18.0" prefWidth="50.0" text="Produkt:">
                                              <HBox.margin>
                                                 <Insets bottom="20.0" left="20.0" top="34.0" />
                                              </HBox.margin>
@@ -167,7 +227,7 @@
                                                 <Insets bottom="20.0" right="20.0" top="30.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Label prefHeight="17.0" prefWidth="87.0" text="Użytkownik:">
+                                          <Label prefHeight="18.0" prefWidth="69.0" text="Użytkownik:">
                                              <HBox.margin>
                                                 <Insets bottom="20.0" left="20.0" top="34.0" />
                                              </HBox.margin>
@@ -185,12 +245,12 @@
                                                 <Insets bottom="20.0" right="20.0" top="30.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Label prefHeight="17.0" prefWidth="42.0" text="Baza:">
+                                          <Label prefHeight="18.0" prefWidth="31.0" text="Baza:">
                                              <HBox.margin>
                                                 <Insets bottom="20.0" left="20.0" top="34.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <ComboBox fx:id="bazaComboBox" onAction="#filterOnActionComboBox" prefHeight="25.0" prefWidth="108.0" promptText="Wszystkie ">
+                                          <ComboBox fx:id="bazaComboBox" onAction="#filterOnActionComboBox" prefHeight="26.0" prefWidth="122.0" promptText="Wszystkie ">
                                              <HBox.margin>
                                                 <Insets bottom="20.0" left="5.0" right="5.0" top="30.0" />
                                              </HBox.margin>
@@ -198,6 +258,12 @@
                                           <Button mnemonicParsing="false" onAction="#clearBaseComboBox" text="X">
                                              <HBox.margin>
                                                 <Insets bottom="20.0" right="40.0" top="30.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Separator layoutX="514.0" layoutY="10.0" orientation="VERTICAL" prefHeight="77.0" prefWidth="0.0" />
+                                          <Button fx:id="btnPrint" mnemonicParsing="false" onAction="#print" prefHeight="26.0" prefWidth="105.0" text="Drukuj">
+                                             <HBox.margin>
+                                                <Insets left="10.0" top="30.0" />
                                              </HBox.margin>
                                           </Button>
                                        </children>
@@ -215,15 +281,22 @@
                                           <TableColumn fx:id="colPACK" onEditCommit="#onEditC2" prefWidth="91.0" text="Opakowanie" />
                                           <TableColumn fx:id="colORDER_QUANITY" onEditCommit="#onEditC2" prefWidth="101.5999755859375" text="Ilość zamówiona" />
                                           <TableColumn fx:id="colORDER_REALIZE" minWidth="0.0" onEditCommit="#onEditC2" prefWidth="113.5999755859375" text="Ilość wykonana" />
-                                          <TableColumn fx:id="colWETPRODUCTLABEDIT2" onEditCommit="#onEditC2" prefWidth="77.0" text="Lab.Edytuj2" />
-                                          <TableColumn fx:id="colCOMMENT" onEditCommit="#onEditC2" prefWidth="130.0" text="Komentarz" />
+                                          <TableColumn fx:id="colWhmAmount" minWidth="0.0" onEditCommit="#onEditC2" prefWidth="113.5999755859375" text="Ilość odebrana" />
+                                          <TableColumn fx:id="colWETPRODUCTLABEDIT2" minWidth="8.0" onEditCommit="#onEditC2" prefWidth="55.0" text="Mokra" />
+                                          <TableColumn fx:id="colCOMMENT" onEditCommit="#onEditC2" prefWidth="143.0" text="Komentarz" />
+                                          <TableColumn fx:id="colDateCommission" onEditCommit="#onEditC2" prefWidth="150.0" text="Data realizacji zlecenia" />
                                           <TableColumn fx:id="colCREATE_DATE_REPORT" onEditCommit="#onEditC2" prefWidth="150.0" text="Data utworzenia zlecenia" />
-                                          <TableColumn fx:id="colIDUSERFOREIGNCreate" onEditCommit="#onEditC2" prefWidth="200.0" text="Użytkownik zlecający" />
                                           <TableColumn fx:id="colEDITION_DATE_REPORT" onEditCommit="#onEditC2" prefWidth="150.0" text="Data ostatniej edycji " />
+                                          <TableColumn fx:id="colIDUSERFOREIGNCreate" onEditCommit="#onEditC2" prefWidth="200.0" text="Użytkownik zlecający" />
                                           <TableColumn fx:id="colIDUSERFOREIGNEdit" onEditCommit="#onEditC2" prefWidth="200.0" text="Użytkownik edytujący" />
-                                          <TableColumn fx:id="colWET_PRODUCT_EDIT" onEditCommit="#onEditC2" prefWidth="50.0" text="Edytuj zamówienie" />
-                                          <TableColumn fx:id="colWETPRODUCTLABEDIT" onEditCommit="#onEditC2" prefWidth="50.0" text="Lab. Edytuj" />
+                                          <TableColumn fx:id="colWET_PRODUCT_EDIT" onEditCommit="#onEditC2" prefWidth="55.0" text="Log." />
+                                          <TableColumn fx:id="colWarehouseman" onEditCommit="#onEditC2" prefWidth="55.0" text="Mag." />
+                                          <TableColumn fx:id="colIDWarehouseman" onEditCommit="#onEditC2" prefWidth="200.0" text="Magazynier" />
+                                          <TableColumn fx:id="colWhmStatus" onEditCommit="#onEditC1" prefWidth="100.0" text="Status" />
+                                          <TableColumn fx:id="colWhmComment" onEditCommit="#onEditC2" prefWidth="156.0" text="Komentarz magazyniera" />
+                                          <TableColumn fx:id="colWETPRODUCTLABEDIT" onEditCommit="#onEditC2" prefWidth="55.0" text="Lab." />
                                           <TableColumn fx:id="colLAB_STATUS" onEditCommit="#onEditC1" prefWidth="100.0" text="Status" />
+                                          <TableColumn fx:id="colUserLab" onEditCommit="#onEditC2" prefWidth="200.0" text="Użytkownik laboratorium" />
                                           <TableColumn fx:id="colWETPRODUCTLABCOMMENT" onEditCommit="#onEditC2" prefWidth="156.0" text="Lab. komentarz" />
                                           <TableColumn fx:id="colWETPRODUCT_DELETE" onEditCommit="#onEditC2" prefWidth="50.0" text="Kasuj" />
                                        </columns>

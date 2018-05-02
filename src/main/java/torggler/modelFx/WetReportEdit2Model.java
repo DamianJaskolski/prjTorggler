@@ -79,17 +79,22 @@ public class WetReportEdit2Model {
         //  tabWetReport.setTabUsersEditForegin (this.EditOrderFxObjectProperty.get ().getUserFxEdit ());
 
         UserDao userDao = new UserDao();
-        TabUsers tabUsers = userDao.findById (TabUsers.class, this.getEdit2OrderFxObjectProperty().getUserFxEdit ()
-                .getId());
+        TabUsers tabUsers = userDao.findById (TabUsers.class, this.getEdit2OrderFxObjectProperty().getUserFxEdit ().getId());
         tabWetReport.setTabUsersEditForegin (tabUsers);
 
 
-        TabUsers tabUsers2 = userDao.findById (TabUsers.class, this.getEdit2OrderFxObjectProperty().getUserFxCreate ()
-                .getId());
+        TabUsers tabUsers2 = userDao.findById (TabUsers.class, this.getEdit2OrderFxObjectProperty().getUserFxCreate ().getId());
+        tabWetReport.setTabUsersForegin (tabUsers2);
 
+        TabUsers tabLabUser = userDao.findById(TabUsers.class, this.getEdit2OrderFxObjectProperty ().getUserFxLab().getId());
+        tabWetReport.setTabUsersLabForegin (tabLabUser);
         //user end
 
-        tabWetReport.setTabUsersForegin (tabUsers2);
+
+        TabUsers tabWhmUsers = userDao.findById(TabUsers.class, this.getEdit2OrderFxObjectProperty().getUserFXWhm()
+                .getId());
+        tabWetReport.setTabUFWarehouseman(tabWhmUsers);
+
         ReportDao reportDao = new ReportDao ();
         reportDao.creatOrUpdate (tabWetReport);
 

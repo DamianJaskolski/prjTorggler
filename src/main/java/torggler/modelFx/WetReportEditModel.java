@@ -78,16 +78,19 @@ public class WetReportEditModel {
         //  tabWetReport.setTabUsersEditForegin (this.EditOrderFxObjectProperty.get ().getUserFxEdit ());
 
         UserDao userDao = new UserDao();
-        TabUsers tabUsers = userDao.findById (TabUsers.class, this.getEditOrderFxObjectProperty().getUserFxEdit ()
-                .getId());
+        TabUsers tabUsers = userDao.findById (TabUsers.class, this.getEditOrderFxObjectProperty().getUserFxEdit ().getId());
         tabWetReport.setTabUsersEditForegin (tabUsers);
 
-
-        TabUsers tabUsers2 = userDao.findById (TabUsers.class, this.getEditOrderFxObjectProperty().getUserFxCreate ()
-                .getId());
-
+        TabUsers tabUsers2 = userDao.findById (TabUsers.class, this.getEditOrderFxObjectProperty().getUserFxCreate ().getId());
         tabWetReport.setTabUsersForegin (tabUsers2);
 
+        TabUsers tabLabUser = userDao.findById(TabUsers.class, this.getEditOrderFxObjectProperty ().getUserFxLab().getId());
+        tabWetReport.setTabUsersLabForegin (tabLabUser);
+
+
+        TabUsers tabWhmUsers = userDao.findById(TabUsers.class, this.getEditOrderFxObjectProperty().getUserFXWhm()
+                .getId());
+        tabWetReport.setTabUFWarehouseman(tabWhmUsers);
 
         //  ----end pobieranie danych niezmienialnych ---------------------
 

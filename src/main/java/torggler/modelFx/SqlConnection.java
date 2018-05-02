@@ -11,7 +11,8 @@ public class SqlConnection {
 
         try {
             DriverManager.registerDriver (new org.postgresql.Driver ( ));
-            Connection conn = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/dbTorggler", "postgres",
+            Connection conn = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/dbTorggler",
+                    "postgres",
                     "dagdam");
             return conn;
         } catch (SQLException e) {

@@ -6,16 +6,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import torggler.ApplicationException;
+import torggler.UserSingleton;
 import torggler.modelFx.*;
 
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 //odpowiednik #44
 
 public class LabController {
 
+    @FXML
+    private Label lblUser;
 
     @FXML
     private TextArea labComment;
@@ -23,11 +28,15 @@ public class LabController {
     @FXML
     private ComboBox<LabFx> labStatusCB;
 
-    @FXML
-    private ComboBox<BaseFx> labBaseCB;
 
     @FXML
-    private ComboBox<GoodsProperty> cmboBoxProdukt;
+    private Label lblProdukt;
+
+    @FXML
+    private Label lblBase;
+
+    @FXML
+    private Label lblDate;
 
     @FXML
     private ToggleButton btnSave;
@@ -41,16 +50,17 @@ public class LabController {
 
     public void initialize() {
 
-        this.labModel = new LabModel();
-        bindings();
+        this.labModel = new LabModel ( );
+
 
 
         try {
-            this.labModel.initStatusList();
+            this.labModel.initStatusList ( );
         } catch (ApplicationException e) {
-            e.printStackTrace();
+            e.printStackTrace ( );
         }
 
+        this.lblUser.setText (UserSingleton.getInstance ( ).log_in);
 
     }
 
@@ -60,35 +70,46 @@ public class LabController {
         // bidnowanie jednostronne pobierające dane z textProperty do getOrderFxObjectProperty
         // this.orderModel.getOrderFxObjectProperty ().labcommentProperty ().bind (this.labComment.textProperty ());
 
+
         // bindowanie dwustronne
-        this.labComment.textProperty().bindBidirectional(this.labModel.getLabFxObjectProperty().labcommentProperty());
+        this.labComment.textProperty ( ).bindBidirectional (this.labModel.getLabFxObjectProperty ( ).labcommentProperty ( ));
 
-        this.cmboBoxProdukt.setItems((this.labModel.getGoodsPropertyObservableList ()));
-        this.cmboBoxProdukt.valueProperty().bindBidirectional(this.labModel.getLabFxObjectProperty().goodsPropertyProperty ());
-// uwaga blad lbl z cmbobox
-        this.labBaseCB.setItems((this.labModel.getBaseFxObservableList()));
-        this.labBaseCB.valueProperty().bindBidirectional(this.labModel.getLabFxObjectProperty().baseFxProperty());
+        lblProdukt.textProperty().bindBidirectional (this.labModel.getLabFxObjectProperty ().goodsPropertyProperty ()
+                .getValue ().nameWetGoodsPropertyProperty ());
 
-        this.labStatusCB.setItems((this.labModel.getStatusFxObservableList()));
-        this.labStatusCB.valueProperty().bindBidirectional(this.labModel.getLabFxObjectProperty().statusFxProperty());
+        this.lblBase.textProperty ().bindBidirectional (this.labModel.getLabFxObjectProperty ().baseFxProperty ().getValue ()
+                .nameProperty ());
 
-    }
+        this.labStatusCB.setItems ((this.labModel.getStatusFxObservableList ( )));
+        this.labStatusCB.valueProperty ( ).bindBidirectional (this.labModel.getLabFxObjectProperty ( ).statusFxProperty ( ));
+
+        this.lblDate.textProperty ().bindBidirectional (this.labModel.getLabFxObjectProperty ().create_dateProperty (), new
+                LocalDateTimeStringConverter () );
+
+
+}
 
 
     public void saveOnAction(ActionEvent actionEvent) {
         // binduje się jedno pole, uzywac tylko do edycji
         try {
-            this.labModel.saveLabInDataBase();
+            this.labModel.saveLabInDataBase ( );
         } catch (ApplicationException e) {
-            e.printStackTrace();
+            e.printStackTrace ( );
         }
 
         //zamknięcie okna
         Stage stage = (Stage)
-                this.btnSave.getScene().getWindow();
-        stage.close();
+                this.btnSave.getScene ( ).getWindow ( );
+        stage.close ( );
     }
 
+    public void cancelOnAction() {
+        //zamknięcie okna
+        Stage stage = (Stage)
+                this.btnSave.getScene ( ).getWindow ( );
+        stage.close ( );
+    }
 
     //GET
     public OrderModel getOrderModel() {
@@ -98,7 +119,4 @@ public class LabController {
     public LabModel getLabModel() {
         return labModel;
     }
-
-
-
 }
